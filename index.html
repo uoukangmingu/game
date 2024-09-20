@@ -21,9 +21,25 @@
         <div id="point-game" style="display: none;">
             <div id="target"></div>
         </div>
+<div id="spin-game" style="display: none;">
+    <div id="spin-area">
+        <div id="spin-target"></div>
+    </div>
+    <div id="spin-count">회전 횟수: <span id="current-spins">0</span> / <span id="required-spins">0</span></div>
+</div>
+
         <div id="timer-bar"></div>
         <div id="score">점수: <span id="score-value">0</span></div>
     </div>
+<audio id="clear-sound">
+    <source src="sounds/MP_띠링! 이목 집중시키는 소리.mp3" type="audio/mpeg">
+</audio>
+<audio id="hover-sound">
+    <source src="sounds/MP_게임 효과음 5 (뽀잉 점프).mp3" type="audio/mpeg">
+</audio>
+<audio id="countdown-sound">
+    <source src="sounds/MP_사보타지 효과음.mp3" type="audio/mpeg">
+</audio>
     <div id="game-over" style="display: none;">
         <h1>게임 오버</h1>
         <p>최종 점수: <span id="final-score"></span></p>
