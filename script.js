@@ -244,17 +244,20 @@ document.getElementById('point-game').addEventListener('click', function(event) 
 });
 
 document.getElementById('restart-button').addEventListener('mouseenter', function() {
-    const audio = new Audio('hover_sound.mp3');  // 호버 사운드 파일 경로
-    audio.play();
+hoverSound();
 });
 
 document.querySelectorAll('.difficulty-btn').forEach(button => {
+    button.addEventListener('mouseenter', function() {
+        hoverSound();
+    });
     button.addEventListener('click', function() {
         startGame(parseInt(this.dataset.time));
     });
 });
 
-document.getElementById('main-menu-button').addEventListener('click', resetGame);
+document.getElementById('main-menu-button').addEventListener('mouseenter', function() { hoverSound(); });
+document.getElementById('main-menu-button').addEventListener('click',  resetGame);
 
 let spinCount = 0;
 let requiredSpins = 0;
@@ -265,7 +268,7 @@ function startSpinMode() {
     hideAllGameModes();
     gameMode = 'spin';
     spinCount = 0;
-    requiredSpins = Math.floor(Math.random() * 4) + 2;
+    requiredSpins = Math.floor(Math.random() * 3) + 3;
     document.getElementById('required-spins').textContent = requiredSpins;
     document.getElementById('current-spins').textContent = spinCount;
     document.getElementById('spin-game').style.display = 'block';
@@ -374,6 +377,11 @@ function updateGameModeDisplay() {
 }
 function playClearSound() {
     const clearSound = document.getElementById('clear-sound');
+    clearSound.currentTime = 0;  // 항상 처음부터 재생
+    clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
+}
+function hoverSound() {
+    const clearSound = document.getElementById('hover-sound');
     clearSound.currentTime = 0;  // 항상 처음부터 재생
     clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
 }
