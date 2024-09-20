@@ -279,3 +279,26 @@ body {
     text-align: center;
     font-size: 48px;
 }
+#restart-button, #main-menu-button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    padding: 15px 30px;
+    margin: 10px;
+    background-color: var(--retro-light-green);
+    color: var(--retro-black);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 0 var(--retro-dark-green);
+}
+
+#restart-button:hover, #main-menu-button:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 var(--retro-dark-green);
+}
+
+#restart-button:active, #main-menu-button:active {
+    transform: translateY(5px);
+    box-shadow: none;
+}

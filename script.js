@@ -39,8 +39,16 @@ function resetGame() {
     score = 0;
     document.getElementById('score-value').textContent = score;
     document.getElementById('game-over').style.display = 'none';
-    document.getElementById('main-screen').style.display = 'block';
+    document.getElementById('game-container').style.display = 'none';
+    document.getElementById('main-screen').style.display = 'flex';
+    
+    // 난이도 버튼 레이아웃 초기화
+    const mainScreen = document.getElementById('main-screen');
+    mainScreen.style.flexDirection = 'row';
+    mainScreen.style.justifyContent = 'center';
+    mainScreen.style.alignItems = 'center';
 }
+
 
 function getRandomKey() {
     const keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
