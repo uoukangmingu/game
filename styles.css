@@ -241,3 +241,35 @@ body {
     animation: confetti 1s ease-out forwards;
 }
 
+#main-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.difficulty-btn, #main-menu-button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    padding: 15px 30px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 0 #333;
+}
+
+.difficulty-btn:nth-child(1) { background-color: #8bac0f; }
+.difficulty-btn:nth-child(2) { background-color: #306230; }
+.difficulty-btn:nth-child(3) { background-color: #0f380f; }
+
+.difficulty-btn:hover, #main-menu-button:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 #333;
+}
+
+#countdown {
+    text-align: center;
+    font-size: 48px;
+}
