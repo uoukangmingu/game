@@ -20,11 +20,12 @@ function startGame(difficulty) {
 function startCountdown() {
     document.getElementById('countdown').style.display = 'block';
     let count = 3;
+CountdownSound();
     document.getElementById('countdown-number').textContent = count;
-    
     let countdownInterval = setInterval(() => {
         count--;
         if (count > 0) {
+            CountdownSound();
             document.getElementById('countdown-number').textContent = count;
         } else {
             clearInterval(countdownInterval);
@@ -382,6 +383,11 @@ function playClearSound() {
 }
 function hoverSound() {
     const clearSound = document.getElementById('hover-sound');
+    clearSound.currentTime = 0;  // 항상 처음부터 재생
+    clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
+}
+function CountdownSound() {
+    const clearSound = document.getElementById('countdown-sound');
     clearSound.currentTime = 0;  // 항상 처음부터 재생
     clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
 }
