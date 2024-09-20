@@ -135,28 +135,14 @@ function switchGameMode() {
 }
 
 function hideAllGameModes() {
-    document.getElementById('keys-display').style.display =     'none';
-    document.getElementById('directions-display').style.display = 'none';
-    document.getElementById('point-game').style.display = 'none';
+document.getElementById('keys-display').style.display =     'none';
+document.getElementById('directions-display').style.display = 'none';
+document.getElementById('point-game').style.display = 'none';
+    document.getElementById('spin-game').style.display = 'none'; 
 }
 
-function startRound() {
-    hideAllGameModes();
-    switchGameMode();
-    if (gameMode === 'keys') {
-        displayKeys();
-    } else if (gameMode === 'directions') {
-        displayDirections();
-    } else if (gameMode === 'typing') {
-        startTypingMode();
-    } else {
-        startPointingMode();
-    }
-    resetTimerBar();
-    roundStartTime = Date.now();
-    clearTimeout(window.roundTimer);
-    window.roundTimer = setTimeout(gameOver, timeLimit);
-}
+
+
 
 function handleKeyPress(event) {
     if (gameMode === 'keys') {
@@ -175,6 +161,7 @@ function handleKeysMode(event) {
         if (currentKeys.length === 0) {
             score++;
             document.getElementById('score-value').textContent = score;
+    playClearSound();
             startRound();
         }
     }
@@ -194,6 +181,7 @@ function handleDirectionsMode(event) {
         if (currentDirections.length === 0) {
             score++;
             document.getElementById('score-value').textContent = score;
+    playClearSound();
             startRound();
         }
     } else if (pressedDirection) {
@@ -208,6 +196,7 @@ function handleTypingMode(event) {
         if (typingCount >= typingGoal) {
             score++;
             document.getElementById('score-value').textContent = score;
+    playClearSound();
             startRound();
         }
     }
@@ -217,6 +206,7 @@ function handlePointingMode(event) {
     if (event.target.id === 'target') {
                 score++;
         document.getElementById('score-value').textContent = score;
+    playClearSound();
         startRound();
     } else {
         gameOver();
@@ -241,6 +231,7 @@ function restartGame() {
     document.getElementById('directions-display').style.display = 'none';
     document.getElementById('point-game').style.display = 'none';
     resetTimerBar();
+    document.getElementById('clear-sound').play();
     startRound();
 }
 
@@ -265,5 +256,124 @@ document.querySelectorAll('.difficulty-btn').forEach(button => {
 
 document.getElementById('main-menu-button').addEventListener('click', resetGame);
 
+let spinCount = 0;
+let requiredSpins = 0;
+let lastAngle = 0;
+let rotations = 0;
 
+function startSpinMode() {
+    hideAllGameModes();
+    gameMode = 'spin';
+    spinCount = 0;
+    requiredSpins = Math.floor(Math.random() * 4) + 2;
+    document.getElementById('required-spins').textContent = requiredSpins;
+    document.getElementById('current-spins').textContent = spinCount;
+    document.getElementById('spin-game').style.display = 'block';
+    document.getElementById('keys-display').style.display = 'none';
+    document.getElementById('directions-display').style.display = 'none';
+    document.getElementById('point-game').style.display = 'none';
+}
 
+function handleSpinMode(event) {
+    const spinArea = document.getElementById('spin-area');
+    const rect = spinArea.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2
+    const angle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
+    const angleDiff = angle - lastAngle;
+
+    if (angleDiff > Math.PI) {
+        rotations--;
+    } else if (angleDiff < -Math.PI) {
+        rotations++;
+    }
+
+    lastAngle = angle;
+
+    if (Math.abs(rotations) >= 1) {
+        spinCount++;
+        document.getElementById('current-spins').textContent = spinCount;
+        rotations = 0;
+
+if (spinCount >= requiredSpins) {
+    score++;
+    document.getElementById('score-value').textContent = score;
+    playClearSound();
+    startRound();
+}
+
+    }
+}
+
+function switchGameMode() {
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin'];
+    gameMode = modes[Math.floor(Math.random() * modes.length)];
+}
+
+function startRound() {
+    hideAllGameModes();
+    switchGameMode();
+    if (gameMode === 'keys') {
+        displayKeys();
+    } else if (gameMode === 'directions') {
+        displayDirections();
+    } else if (gameMode === 'typing') {
+        startTypingMode();
+    } else if (gameMode === 'pointing') {
+        startPointingMode();
+    } else if (gameMode === 'spin') {
+        startSpinMode();
+    }
+    resetTimerBar();
+    roundStartTime = Date.now();
+    clearTimeout(window.roundTimer);
+    window.roundTimer = setTimeout(gameOver, timeLimit);
+}
+
+document.getElementById('spin-area').addEventListener('mousemove', function(event) {
+    if (gameMode === 'spin') {
+        handleSpinMode(event);
+    }
+});
+
+function displayGameMode() {
+    const modeDisplay = document.createElement('div');
+    modeDisplay.id = 'mode-display';
+    modeDisplay.style.position = 'absolute';
+     modeDisplay.style.top = '10px';
+    modeDisplay.style.left = '50%';
+    modeDisplay.style.transform = 'translateX(-50%)';
+    modeDisplay.style.padding = '5px 10px';
+    modeDisplay.style.backgroundColor = 'var(--retro-dark-green)';
+    modeDisplay.style.color = 'var(--retro-beige)';
+    modeDisplay.style.border = '2px solid var(--retro-black)';
+    modeDisplay.style.fontFamily = "'Press Start 2P', cursive";
+    modeDisplay.style.fontSize = '14px';
+    document.body.appendChild(modeDisplay);
+}
+
+function updateGameModeDisplay() {
+    const modeDisplay = document.getElementById('mode-display');
+    switch(gameMode) {
+        case 'keys':
+            modeDisplay.textContent = '키 모드';
+            break;
+        case 'directions':
+            modeDisplay.textContent = '방향 모드';
+            break;
+        case 'typing':
+            modeDisplay.textContent = '타이핑 모드';
+            break;
+        case 'pointing':
+            modeDisplay.textContent = '포인팅 모드';
+            break;
+        case 'spin':
+            modeDisplay.textContent = '스핀 모드';
+            break;
+    }
+}
+function playClearSound() {
+    const clearSound = document.getElementById('clear-sound');
+    clearSound.currentTime = 0;  // 항상 처음부터 재생
+    clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
+}
