@@ -36,6 +36,7 @@ function startCountdown() {
 }
 
 function resetGame() {
+    setTimeout(() => {
     score = 0;
     document.getElementById('score-value').textContent = score;
     document.getElementById('game-over').style.display = 'none';
@@ -47,6 +48,7 @@ function resetGame() {
     mainScreen.style.flexDirection = 'row';
     mainScreen.style.justifyContent = 'center';
     mainScreen.style.alignItems = 'center';
+    }, 100);
 }
 
 
@@ -223,6 +225,7 @@ function handlePointingMode(event) {
 
 function gameOver() {
     clearTimeout(window.roundTimer);
+    document.getElementById('main-screen').style.display = 'none';
     document.getElementById('game-container').style.display = 'none';
     document.getElementById('game-over').style.display = 'block';
     document.getElementById('final-score').textContent = score;
