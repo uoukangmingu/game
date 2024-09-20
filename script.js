@@ -232,7 +232,6 @@ function restartGame() {
     document.getElementById('directions-display').style.display = 'none';
     document.getElementById('point-game').style.display = 'none';
     resetTimerBar();
-    document.getElementById('clear-sound').play();
     startRound();
 }
 
