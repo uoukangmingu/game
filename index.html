@@ -1,16 +1,36 @@
-<!DOCTYPE html>
-<html lang="ko">
+﻿<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>좌석 구매</title>
-    <link rel="stylesheet" href="style.css">
+    <title>키보드 게임</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <button class="btn neumorphism" data-link="https://payapplite.com/l/DuimwY" aria-label="일반 티켓">일반 티켓</button>
-        <button class="btn glassmorphism" data-link="https://payapplite.com/l/Ws13cf" aria-label="할인권 티켓">할인권 티켓</button>
+    <div id="main-screen">
+        <button class="difficulty-btn" data-time="2000">쉬움</button>
+        <button class="difficulty-btn" data-time="1800">보통</button>
+        <button class="difficulty-btn" data-time="1500">어려움</button>
     </div>
+    <div id="countdown" style="display: none;">
+        <h2>집중하세요</h2>
+        <div id="countdown-number"></div>
+    </div>
+    <div id="game-container" style="display: none;">
+        <div id="keys-display"></div>
+        <div id="directions-display"></div>
+        <div id="point-game" style="display: none;">
+            <div id="target"></div>
+        </div>
+        <div id="timer-bar"></div>
+        <div id="score">점수: <span id="score-value">0</span></div>
+    </div>
+    <div id="game-over" style="display: none;">
+        <h1>게임 오버</h1>
+        <p>최종 점수: <span id="final-score"></span></p>
+        <button id="restart-button">다시하기</button>
+        <button id="main-menu-button">메인화면</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

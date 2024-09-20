@@ -260,9 +260,15 @@ body {
     box-shadow: 0 5px 0 #333;
 }
 
-.difficulty-btn:nth-child(1) { background-color: #8bac0f; }
-.difficulty-btn:nth-child(2) { background-color: #306230; }
-.difficulty-btn:nth-child(3) { background-color: #0f380f; }
+.difficulty-btn:nth-child(1) { background-color: #8bac0f; } /* 쉬움 - 밝은 녹색 */
+.difficulty-btn:nth-child(2) { background-color: #f0a30a; } /* 보통 - 주황색 */
+.difficulty-btn:nth-child(3) { background-color: #d3212f; } /* 어려움 - 빨간색 */
+
+.difficulty-btn {
+    color: #000000; /* 텍스트 색상을 검정으로 변경 */
+    font-weight: bold; /* 글씨를 굵게 */
+}
+
 
 .difficulty-btn:hover, #main-menu-button:hover {
     transform: translateY(2px);
