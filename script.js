@@ -215,6 +215,7 @@ function handlePointingMode(event) {
 }
 
 function gameOver() {
+lostSound();
     clearTimeout(window.roundTimer);
     document.getElementById('main-screen').style.display = 'none';
     document.getElementById('game-container').style.display = 'none';
@@ -388,6 +389,11 @@ function hoverSound() {
 }
 function CountdownSound() {
     const clearSound = document.getElementById('countdown-sound');
+    clearSound.currentTime = 0;  // 항상 처음부터 재생
+    clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
+}
+function lostSound() {
+    const clearSound = document.getElementById('lost-sound');
     clearSound.currentTime = 0;  // 항상 처음부터 재생
     clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
 }
