@@ -226,14 +226,15 @@ function restartGame() {
     score = 0;
     gameMode = 'keys';
     document.getElementById('score-value').textContent = score;
-    document.getElementById('game-container').style.display = 'flex';
+    document.getElementById('game-container').style.display = 'none';
     document.getElementById('game-over').style.display = 'none';
-    document.getElementById('keys-display').style.display = 'block';
+    document.getElementById('keys-display').style.display = 'none';
     document.getElementById('directions-display').style.display = 'none';
     document.getElementById('point-game').style.display = 'none';
     resetTimerBar();
-    startRound();
+    startCountdown();
 }
+
 
 document.addEventListener('keydown', handleKeyPress);
 document.getElementById('restart-button').addEventListener('click', restartGame);
