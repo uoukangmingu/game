@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키보드 게임</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="keys-display"></div>
+        <div id="directions-display"></div>
+        <div id="point-game" style="display: none;">
+            <div id="target"></div>
+        </div>
+        <div id="timer-bar"></div>
+        <div id="score">점수: <span id="score-value">0</span></div>
+    </div>
+<div id="game-over" style="display: none;">
+    <h1>게임 오버</h1>
+    <p>최종 점수: <span id="final-score"></span></p>
+    <button id="restart-button">다시하기</button>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
