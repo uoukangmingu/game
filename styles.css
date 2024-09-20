@@ -302,3 +302,15 @@ body {
     transform: translateY(5px);
     box-shadow: none;
 }
+.difficulty-btn {
+    font-size: calc(14px + 1vw);
+    padding: calc(10px + 1vw) calc(20px + 1vw);
+}
+
+@media (max-width: 600px) {
+    .difficulty-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+        margin: 5px;
+    }
+}
