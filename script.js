@@ -136,10 +136,11 @@ function switchGameMode() {
 }
 
 function hideAllGameModes() {
-document.getElementById('keys-display').style.display =     'none';
+document.getElementById('keys-display').style.display = 'none';
 document.getElementById('directions-display').style.display = 'none';
 document.getElementById('point-game').style.display = 'none';
-    document.getElementById('spin-game').style.display = 'none'; 
+document.getElementById('spin-game').style.display = 'none';
+document.getElementById('color-game').style.display = 'none'; 
 }
 
 
@@ -311,7 +312,7 @@ if (spinCount >= requiredSpins) {
 }
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin'];
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color'];
     gameMode = modes[Math.floor(Math.random() * modes.length)];
 }
 
@@ -324,6 +325,8 @@ function startRound() {
         displayDirections();
     } else if (gameMode === 'typing') {
         startTypingMode();
+    } else if (gameMode === 'color') {
+        startColorGameMode();
     } else if (gameMode === 'pointing') {
         startPointingMode();
     } else if (gameMode === 'spin') {
@@ -345,7 +348,7 @@ function displayGameMode() {
     const modeDisplay = document.createElement('div');
     modeDisplay.id = 'mode-display';
     modeDisplay.style.position = 'absolute';
-     modeDisplay.style.top = '10px';
+    modeDisplay.style.top = '10px';
     modeDisplay.style.left = '50%';
     modeDisplay.style.transform = 'translateX(-50%)';
     modeDisplay.style.padding = '5px 10px';
@@ -396,4 +399,56 @@ function lostSound() {
     const clearSound = document.getElementById('lost-sound');
     clearSound.currentTime = 0;  // 항상 처음부터 재생
     clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
+}
+
+function startColorGameMode() {
+    hideAllGameModes();
+    gameMode = 'color';
+    const colorGame = document.getElementById('color-game');
+    colorGame.style.display = 'grid';
+    colorGame.innerHTML = ''; // 기존 타일 제거
+    createColorTiles();
+}
+
+
+function createColorTiles() {
+    const colorGame = document.getElementById('color-game');
+    colorGame.innerHTML = '';
+    
+    const tileSize = Math.floor(150 / 3) - 5; // 150px / 3 - gap
+    
+    const baseColor = getRandomColor();
+    const differentColor = getSlightlyDifferentColor(baseColor);
+    const differentTileIndex = Math.floor(Math.random() * 9);
+    
+    for (let i = 0; i < 9; i++) {
+        const tile = document.createElement('div');
+        tile.className = 'color-tile';
+        tile.style.width = `${tileSize}px`;
+        tile.style.height = `${tileSize}px`;
+        tile.style.backgroundColor = i === differentTileIndex ? differentColor : baseColor;
+        tile.addEventListener('click', () => handleColorTileClick(i === differentTileIndex));
+        colorGame.appendChild(tile);
+    }
+}
+
+
+function getRandomColor() {
+    return `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+}
+
+function getSlightlyDifferentColor(baseColor) {
+    const rgb = baseColor.match(/\d+/g).map(Number);
+    return `rgb(${rgb[0]+10},${rgb[1]+10},${rgb[2]+10})`;
+}
+
+function handleColorTileClick(isCorrect) {
+    if (isCorrect) {
+        score++;
+        document.getElementById('score-value').textContent = score;
+        playClearSound();
+        startRound();
+    } else {
+        gameOver();
+    }
 }

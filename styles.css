@@ -352,3 +352,26 @@ body {
     font-size: 18px;
     color: var(--retro-beige);
 }
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#color-game {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    width: 150px;
+    height: 150px;
+}
+
+.color-tile {
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.color-tile:hover {
+    transform: scale(1.05);
+}
