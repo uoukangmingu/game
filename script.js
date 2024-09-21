@@ -221,6 +221,7 @@ lostSound();
 }
 
 function restartGame() {
+    setTimeout(() => {
     score = 0;
     gameMode = 'keys';
     document.getElementById('score-value').textContent = score;
@@ -231,6 +232,7 @@ function restartGame() {
     document.getElementById('point-game').style.display = 'none';
     resetTimerBar();
     startCountdown();
+    }, 100);
 }
 
 
