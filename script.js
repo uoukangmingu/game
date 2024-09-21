@@ -130,10 +130,6 @@ function resetTimerBar() {
     timerBarInner.style.animation = `timer ${timeLimit/1000}s linear forwards`;
 }
 
-function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing'];
-    gameMode = modes[Math.floor(Math.random() * modes.length)];
-}
 
 function hideAllGameModes() {
 document.getElementById('keys-display').style.display = 'none';
@@ -377,6 +373,9 @@ function updateGameModeDisplay() {
             break;
         case 'spin':
             modeDisplay.textContent = '스핀 모드';
+            break;
+        case 'color':
+            modeDisplay.textContent = '컬러 모드';
             break;
     }
 }
