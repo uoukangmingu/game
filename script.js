@@ -312,10 +312,26 @@ if (spinCount >= requiredSpins) {
     }
 }
 
+const recentModes = [];
+const RECENT_MODES_TO_REMEMBER = 3;
+
 function switchGameMode() {
     const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color'];
-    gameMode = modes[Math.floor(Math.random() * modes.length)];
+    const availableModes = modes.filter(mode => !recentModes.includes(mode));
+    
+    if (availableModes.length === 0) {
+        // 모든 모드가 최근에 사용되었다면 가장 오래된 것부터 제거
+        recentModes.shift();
+    }
+    
+    gameMode = availableModes[Math.floor(Math.random() * availableModes.length)];
+    recentModes.push(gameMode);
+    
+    if (recentModes.length > RECENT_MODES_TO_REMEMBER) {
+        recentModes.shift();
+    }
 }
+
 
 function startRound() {
     createModeDisplay();
