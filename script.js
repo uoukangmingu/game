@@ -180,6 +180,8 @@ document.getElementById('color-game').style.display = 'none';
 
 
 function handleKeyPress(event) {
+    if (isGameOver) return;  // 게임 오버 상태면 키 입력 무시
+
     if (gameMode === 'keys') {
         handleKeysMode(event);
     } else if (gameMode === 'directions') {
@@ -190,6 +192,7 @@ function handleKeyPress(event) {
 }
 
 function handleKeysMode(event) {
+    if (isGameOver) return; 
     const pressedKey = event.key.toUpperCase();
     if (currentKeys.includes(pressedKey)) {
         currentKeys = currentKeys.filter(key => key !== pressedKey);
@@ -203,6 +206,7 @@ function handleKeysMode(event) {
 }
 
 function handleDirectionsMode(event) {
+    if (isGameOver) return; 
     const keyToDirection = {
         'ArrowLeft': 'left',
         'ArrowUp': 'up',
@@ -225,6 +229,7 @@ function handleDirectionsMode(event) {
 }
 
 function handleTypingMode(event) {
+    if (isGameOver) return; 
     if (event.key === 'Control' || event.code === 'ControlRight') {
         typingCount++;
         document.getElementById('keys-display').textContent = `Ctrl 키를 ${typingGoal - typingCount}번 더 누르세요!`;
@@ -238,6 +243,7 @@ function handleTypingMode(event) {
 }
 
 function handlePointingMode(event) {
+    if (isGameOver) return; 
     if (event.target.id === 'target') {
                 score++;
         document.getElementById('score-value').textContent = score;
@@ -248,8 +254,11 @@ function handlePointingMode(event) {
     }
 }
 
+let isGameOver = false;
+
 function gameOver() {
-lostSound();
+    isGameOver = true;
+    lostSound();
     clearTimeout(window.roundTimer);
     document.getElementById('main-screen').style.display = 'none';
     document.getElementById('game-container').style.display = 'none';
@@ -324,6 +333,7 @@ function startSpinMode() {
 }
 
 function handleSpinMode(event) {
+    if (isGameOver) return;
     const spinArea = document.getElementById('spin-area');
     const rect = spinArea.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -376,6 +386,7 @@ function switchGameMode() {
 
 
 function startRound() {
+    isGameOver = false; 
     createModeDisplay();
     hideAllGameModes();
     switchGameMode();
@@ -507,6 +518,7 @@ function getSlightlyDifferentColor(baseColor) {
 }
 
 function handleColorTileClick(isCorrect) {
+    if (isGameOver) return; 
     if (isCorrect) {
         score++;
         document.getElementById('score-value').textContent = score;
