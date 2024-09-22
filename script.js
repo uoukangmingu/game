@@ -8,19 +8,50 @@ let gameMode = 'keys'; // 'keys', 'directions', 'typing', 'pointing' 중 하나
 let roundStartTime;
 const directions = ['left', 'up', 'right', 'down'];
 let usedKeys = [];
+let currentMusic = null;
+
+function playMusic(difficulty) {
+    if (currentMusic) {
+        currentMusic.pause();
+        currentMusic.currentTime = 0;
+    }
+
+    let musicId;
+    switch(difficulty) {
+        case 1800:
+            musicId = 'easy-music';
+            break;
+        case 1500:
+            musicId = 'normal-music';
+            break;
+        case 1200:
+            musicId = 'hard-music';
+            break;
+        default:
+            musicId = 'easy-music';  // 기본값 설정
+    }
+
+    currentMusic = document.getElementById(musicId);
+    if (currentMusic) {
+        currentMusic.play();
+    }
+}
 
 function startGame(difficulty) {
     timeLimit = difficulty;
     score = 0;
     document.getElementById('score-value').textContent = score;
     document.getElementById('main-screen').style.display = 'none';
+    document.getElementById('game-container').style.display = 'none';
     startCountdown();
 }
+
+
 
 function startCountdown() {
     document.getElementById('countdown').style.display = 'block';
     let count = 3;
-CountdownSound();
+    CountdownSound();
     document.getElementById('countdown-number').textContent = count;
     let countdownInterval = setInterval(() => {
         count--;
@@ -31,10 +62,12 @@ CountdownSound();
             clearInterval(countdownInterval);
             document.getElementById('countdown').style.display = 'none';
             document.getElementById('game-container').style.display = 'flex';
+            playMusic(timeLimit);
             startRound();
         }
     }, 1000);
 }
+
 
 function resetGame() {
     setTimeout(() => {
@@ -218,25 +251,31 @@ lostSound();
     document.getElementById('game-container').style.display = 'none';
     document.getElementById('game-over').style.display = 'block';
     document.getElementById('final-score').textContent = score;
+    if (currentMusic) {
+        currentMusic.pause();
+        currentMusic.currentTime = 0;
+    }
 }
 
 function restartGame() {
     setTimeout(() => {
-    score = 0;
-    gameMode = 'keys';
-    document.getElementById('score-value').textContent = score;
-    document.getElementById('game-container').style.display = 'none';
-    document.getElementById('game-over').style.display = 'none';
-    document.getElementById('keys-display').style.display = 'none';
-    document.getElementById('directions-display').style.display = 'none';
-    document.getElementById('point-game').style.display = 'none';
-    resetTimerBar();
-    if (window.roundTimer) {
-        clearTimeout(window.roundTimer);
-    }
-    startCountdown();
+        score = 0;
+        gameMode = 'keys';
+        timeLimit = 1800;
+        document.getElementById('score-value').textContent = score;
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('game-over').style.display = 'none';
+        document.getElementById('keys-display').style.display = 'none';
+        document.getElementById('directions-display').style.display = 'none';
+        document.getElementById('point-game').style.display = 'none';
+        resetTimerBar();
+        if (window.roundTimer) {
+            clearTimeout(window.roundTimer);
+        }
+        startCountdown();
     }, 100);
 }
+
 
 
 document.addEventListener('keydown', handleKeyPress);
@@ -395,10 +434,10 @@ function updateGameModeDisplay() {
             modeDisplay.textContent = '잡아라!';
             break;
         case 'spin':
-            modeDisplay.textContent = '돌려라';
+            modeDisplay.textContent = '돌려라!';
             break;
         case 'color':
-            modeDisplay.textContent = '다른색';
+            modeDisplay.textContent = '다른색!';
             break;
     }
 }
