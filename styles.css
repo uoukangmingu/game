@@ -425,19 +425,23 @@ body {
 
 #mode-display {
     position: absolute;
-    top: 10px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--retro-light-green);
     color: var(--retro-black);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 15px 30px;
+    border-radius: 15px;
     border: 5px solid var(--retro-black);
     font-family: 'Press Start 2P', cursive;
+    font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 
 }
+
+
 
 #game-container {
     position: relative;
