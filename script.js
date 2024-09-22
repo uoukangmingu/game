@@ -453,3 +453,25 @@ function handleColorTileClick(isCorrect) {
         gameOver();
     }
 }
+
+document.getElementById('play-button').addEventListener('click', function() {
+    hoverSound();
+    this.style.display = 'none';
+    const difficultyButtons = document.getElementById('difficulty-buttons');
+    difficultyButtons.style.display = 'flex';
+    difficultyButtons.style.flexDirection = 'row';
+    difficultyButtons.style.justifyContent = 'center';
+    difficultyButtons.style.gap = '10px';
+    
+    // 버튼들을 순차적으로 나타나게 하는 애니메이션
+    const buttons = difficultyButtons.getElementsByTagName('button');
+    Array.from(buttons).forEach((button, index) => {
+        button.style.opacity = '0';
+        button.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            button.style.transition = 'opacity 0.5s, transform 0.5s';
+            button.style.opacity = '1';
+            button.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
+});
