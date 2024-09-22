@@ -231,6 +231,9 @@ function restartGame() {
     document.getElementById('directions-display').style.display = 'none';
     document.getElementById('point-game').style.display = 'none';
     resetTimerBar();
+    if (window.roundTimer) {
+        clearTimeout(window.roundTimer);
+    }
     startCountdown();
     }, 100);
 }
@@ -315,8 +318,10 @@ function switchGameMode() {
 }
 
 function startRound() {
+    createModeDisplay();
     hideAllGameModes();
     switchGameMode();
+    updateGameModeDisplay();
     if (gameMode === 'keys') {
         displayKeys();
     } else if (gameMode === 'directions') {
@@ -475,3 +480,11 @@ document.getElementById('play-button').addEventListener('click', function() {
         }, index * 200);
     });
 });
+
+function createModeDisplay() {
+    if (!document.getElementById('mode-display')) {
+        const modeDisplay = document.createElement('div');
+        modeDisplay.id = 'mode-display';
+        document.body.appendChild(modeDisplay);
+    }
+}
