@@ -18,17 +18,17 @@ function playMusic(difficulty) {
 
     let musicId;
     switch(difficulty) {
-        case 1800:
+        case 2000:
             musicId = 'easy-music';
             break;
-        case 1500:
+        case 1800:
             musicId = 'normal-music';
             break;
-        case 1200:
+        case 1500:
             musicId = 'hard-music';
             break;
         default:
-            musicId = 'easy-music';  // 기본값 설정
+            musicId = 'easy-music';
     }
 
     currentMusic = document.getElementById(musicId);
@@ -37,7 +37,11 @@ function playMusic(difficulty) {
     }
 }
 
+
+let currentDifficulty;
+
 function startGame(difficulty) {
+    currentDifficulty = difficulty;
     timeLimit = difficulty;
     score = 0;
     document.getElementById('score-value').textContent = score;
@@ -261,7 +265,6 @@ function restartGame() {
     setTimeout(() => {
         score = 0;
         gameMode = 'keys';
-        timeLimit = 1800;
         document.getElementById('score-value').textContent = score;
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('game-over').style.display = 'none';
@@ -272,7 +275,7 @@ function restartGame() {
         if (window.roundTimer) {
             clearTimeout(window.roundTimer);
         }
-        startCountdown();
+        startGame(currentDifficulty);
     }, 100);
 }
 
