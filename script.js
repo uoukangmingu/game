@@ -87,6 +87,10 @@ function resetGame() {
     mainScreen.style.justifyContent = 'center';
     mainScreen.style.alignItems = 'center';
     }, 100);
+    const gameOverScreen = document.getElementById('game-over');
+    gameOverScreen.style.left = '50%';
+    gameOverScreen.style.transform = 'translate(-50%, -50%)';
+
     updateMainLeaderboard();
 }
 
