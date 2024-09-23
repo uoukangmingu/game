@@ -3,8 +3,8 @@ let currentKeys = [];
 let currentDirections = [];
 let typingCount = 0;
 let typingGoal = 0;
-let timeLimit = 1800; // 기본 제한 시간
-let gameMode = 'keys'; // 'keys', 'directions', 'typing', 'pointing' 중 하나
+let timeLimit = 1800;
+let gameMode = 'keys';
 let roundStartTime;
 const directions = ['left', 'up', 'right', 'down'];
 let usedKeys = [];
