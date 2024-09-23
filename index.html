@@ -9,13 +9,13 @@
     <div id="main-screen">
     <button id="play-button" class="retro-button">PLAY</button>
     <div id="difficulty-buttons" style="display: none;">
-        <button class="difficulty-btn" data-time="2000">쉬움</button>
-        <button class="difficulty-btn" data-time="1800">보통</button>
-        <button class="difficulty-btn" data-time="1500">어려움</button>
+        <button class="difficulty-btn" data-time="2000">EASY</button>
+        <button class="difficulty-btn" data-time="1800">NORMAL</button>
+        <button class="difficulty-btn" data-time="1500">HARD</button>
     </div>
     </div>
     <div id="countdown" style="display: none;">
-        <h2>집중하세요</h2>
+        <h2>FOCUS</h2>
         <div id="countdown-number"></div>
     </div>
     <div id="game-container" style="display: none;">
@@ -29,12 +29,12 @@
     <div id="spin-area">
         <div id="spin-target"></div>
     </div>
-    <div id="spin-count">회전 횟수: <span id="current-spins">0</span> / <span id="required-spins">0</span></div>
+    <div id="spin-count">Counting Rotating: <span id="current-spins">0</span> / <span id="required-spins">0</span></div>
 </div>
 <div id="color-game" style="display: none;"></div>
 
         <div id="timer-bar"></div>
-        <div id="score">점수: <span id="score-value">0</span></div>
+        <div id="score">Score: <span id="score-value">0</span></div>
     </div>
 <audio id="clear-sound">
     <source src="sounds/MP_띠링! 이목 집중시키는 소리.mp3" type="audio/mpeg">
@@ -60,18 +60,18 @@
 </audio>
 
     <div id="game-over" style="display: none;">
-    <h1>게임 오버!</h1>
-    <p>최종 점수: <span id="final-score"></span></p>
-    <button id="restart-button">다시 시작</button>
-    <button id="main-menu-button">메인 메뉴</button>
-    <button id="register-score-button">점수 등록</button>
+    <h1>GAME OVER!</h1>
+    <p>Final Score: <span id="final-score"></span></p>
+    <button id="restart-button">Restart</button>
+    <button id="main-menu-button">Main Menu</button>
+    <button id="register-score-button">Score Record</button>
 </div>
 
 <!-- 점수판 추가 -->
 <div id="leaderboard" style="display: none;">
-    <h2>점수판</h2>
+    <h2>Score Board</h2>
     <ul id="score-list"></ul>
-    <button id="close-leaderboard">닫기</button>
+    <button id="close-leaderboard">Close</button>
 </div>
     <script src="script.js"></script>
 </body>
