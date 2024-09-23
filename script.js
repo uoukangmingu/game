@@ -1,4 +1,4 @@
-﻿﻿let score = 0;
+﻿﻿﻿let score = 0;
 let currentKeys = [];
 let currentDirections = [];
 let typingCount = 0;
@@ -276,6 +276,11 @@ function restartGame() {
         document.getElementById('keys-display').style.display = 'none';
         document.getElementById('directions-display').style.display = 'none';
         document.getElementById('point-game').style.display = 'none';
+        document.getElementById('register-score-button').style.display = 'block';
+        const mainScreen = document.getElementById('main-screen');
+        mainScreen.style.flexDirection = 'row';
+        mainScreen.style.justifyContent = 'center';
+        mainScreen.style.alignItems = 'center';
         resetTimerBar();
         if (window.roundTimer) {
             clearTimeout(window.roundTimer);
@@ -590,9 +595,9 @@ function closeLeaderboard() {
 }
 
 let difficultyScores = {
-    2000: 5,  // 쉬움
-    1800: 10, // 보통
-    1500: 15  // 어려움
+    2000: 15,  // 쉬움
+    1800: 18, // 보통
+    1500: 20  // 어려움
 };
 
 function updateScore(difficulty) {
