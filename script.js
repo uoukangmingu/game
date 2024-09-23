@@ -438,22 +438,22 @@ function updateGameModeDisplay() {
     const modeDisplay = document.getElementById('mode-display');
     switch(gameMode) {
         case 'keys':
-            modeDisplay.textContent = '알파벳!';
+            modeDisplay.textContent = 'Type!';
             break;
         case 'directions':
-            modeDisplay.textContent = '방향키!';
+            modeDisplay.textContent = 'Direction!';
             break;
         case 'typing':
-            modeDisplay.textContent = '연타해!';
+            modeDisplay.textContent = 'Hit The Control!';
             break;
         case 'pointing':
-            modeDisplay.textContent = '잡아라!';
+            modeDisplay.textContent = 'Catch!';
             break;
         case 'spin':
-            modeDisplay.textContent = '돌려라!';
+            modeDisplay.textContent = 'Spin Mouse!';
             break;
         case 'color':
-            modeDisplay.textContent = '다른색!';
+            modeDisplay.textContent = 'Absolute Color!';
             break;
     }
 }
