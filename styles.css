@@ -531,3 +531,12 @@ body {
     justify-content: center;
     margin-bottom: 20px;
 }
+
+#difficulty-buttons-container {
+    margin-bottom: 20px;
+}
+
+#main-leaderboard-container {
+    width: 100%;
+    max-width: 300px;
+}

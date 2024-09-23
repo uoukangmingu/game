@@ -75,24 +75,40 @@ function startCountdown() {
 
 function resetGame() {
     setTimeout(() => {
-    score = 0;
-    document.getElementById('score-value').textContent = score;
-    document.getElementById('game-over').style.display = 'none';
-    document.getElementById('game-container').style.display = 'none';
-    document.getElementById('main-screen').style.display = 'flex';
-    
-    // 난이도 버튼 레이아웃 초기화
-    const mainScreen = document.getElementById('main-screen');
-    mainScreen.style.flexDirection = 'row';
-    mainScreen.style.justifyContent = 'center';
-    mainScreen.style.alignItems = 'center';
+        score = 0;
+        document.getElementById('score-value').textContent = score;
+        document.getElementById('game-over').style.display = 'none';
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('main-screen').style.display = 'flex';
+        
+        // 메인 화면 레이아웃 수정
+        const mainScreen = document.getElementById('main-screen');
+        mainScreen.style.flexDirection = 'column';
+        mainScreen.style.justifyContent = 'center';
+        mainScreen.style.alignItems = 'center';
+
+        // 난이도 버튼과 리더보드를 감싸는 div 생성
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.id = 'difficulty-buttons-container';
+        const leaderboardContainer = document.createElement('div');
+        leaderboardContainer.id = 'main-leaderboard-container';
+
+        // 기존 요소들을 새 컨테이너로 이동
+        buttonsContainer.appendChild(document.getElementById('difficulty-buttons'));
+        leaderboardContainer.appendChild(document.getElementById('main-leaderboard'));
+
+        // 메인 화면에 새 컨테이너 추가
+        mainScreen.appendChild(buttonsContainer);
+        mainScreen.appendChild(leaderboardContainer);
     }, 100);
+
     const gameOverScreen = document.getElementById('game-over');
     gameOverScreen.style.left = '50%';
     gameOverScreen.style.transform = 'translate(-50%, -50%)';
 
     updateMainLeaderboard();
 }
+
 
 function updateMainLeaderboard() {
     const mainScoreList = document.getElementById('main-score-list');
