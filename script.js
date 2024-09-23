@@ -85,6 +85,8 @@ function resetGame() {
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('main-screen').style.display = 'flex';
         
+        document.getElementById('register-score-button').style.display = 'block';
+
         // 메인 화면 레이아웃 수정
         const mainScreen = document.getElementById('main-screen');
         mainScreen.style.flexDirection = 'column';
