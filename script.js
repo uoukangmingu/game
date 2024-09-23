@@ -444,16 +444,16 @@ function updateGameModeDisplay() {
             modeDisplay.textContent = 'Direction!';
             break;
         case 'typing':
-            modeDisplay.textContent = 'Hit The Control!';
+            modeDisplay.textContent = 'Beat!';
             break;
         case 'pointing':
             modeDisplay.textContent = 'Catch!';
             break;
         case 'spin':
-            modeDisplay.textContent = 'Spin Mouse!';
+            modeDisplay.textContent = 'Spin!';
             break;
         case 'color':
-            modeDisplay.textContent = 'Absolute Color!';
+            modeDisplay.textContent = 'Color!';
             break;
     }
 }
