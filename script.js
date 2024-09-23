@@ -664,3 +664,14 @@ window.addEventListener('load', function() {
         document.getElementById('volumeControl').value = currentVolume;
     }
 });
+
+function playButtonSound() {
+    const sound = document.getElementById('buttonSound');
+    sound.currentTime = 0;  // 소리를 처음부터 재생
+    sound.play();
+}
+
+// 모든 버튼에 효과음 추가
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', playButtonSound);
+});
