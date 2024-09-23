@@ -540,3 +540,38 @@ body {
     width: 100%;
     max-width: 300px;
 }
+
+#volume-control-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-family: 'Press Start 2P', cursive;
+}
+
+#volume-control-container label {
+    margin-right: 10px;
+}
+
+#volumeControl {
+    -webkit-appearance: none;
+    height: 15px;
+    background: #040D03;
+    outline: none;
+
+}
+
+#volumeControl::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #8bac0f;
+    cursor: pointer;
+}
+
+#volume-label {
+    margin-right: 10px;
+    color: var(--retro-light-green);
+    text-shadow: 2px 2px var(--retro-black);
+}

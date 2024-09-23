@@ -35,6 +35,10 @@ function playMusic(difficulty) {
     if (currentMusic) {
         currentMusic.play();
     }
+    if (currentMusic) {
+        currentMusic.volume = currentVolume;
+        currentMusic.play();
+    }
 }
 
 
@@ -637,3 +641,44 @@ function updateScore(difficulty) {
     currentScore += difficultyScores[difficulty];
     document.getElementById('score').textContent = `Score: ${currentScore}`;
 }
+
+let currentVolume = 1;
+
+function updateVolumeDisplay() {
+    document.getElementById('volume-bar').style.width = (currentVolume * 100) + '%';
+}
+
+document.getElementById('volume-down').addEventListener('click', function() {
+    if (currentVolume > 0) {
+        currentVolume = Math.max(0, currentVolume - 0.1);
+        setVolume(currentVolume);
+    }
+});
+
+document.getElementById('volume-up').addEventListener('click', function() {
+    if (currentVolume < 1) {
+        currentVolume = Math.min(1, currentVolume + 0.1);
+        setVolume(currentVolume);
+    }
+});
+
+function setVolume(volume) {
+    currentVolume = volume;
+    if (currentMusic) {
+        currentMusic.volume = currentVolume;
+    }
+    localStorage.setItem('gameVolume', currentVolume);
+}
+
+document.getElementById('volumeControl').addEventListener('input', function() {
+    setVolume(this.value);
+});
+
+// 페이지 로드 시 저장된 볼륨 설정 불러오기
+window.addEventListener('load', function() {
+    const savedVolume = localStorage.getItem('gameVolume');
+    if (savedVolume !== null) {
+        currentVolume = parseFloat(savedVolume);
+        document.getElementById('volumeControl').value = currentVolume;
+    }
+});
