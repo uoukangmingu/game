@@ -644,24 +644,6 @@ function updateScore(difficulty) {
 
 let currentVolume = 1;
 
-function updateVolumeDisplay() {
-    document.getElementById('volume-bar').style.width = (currentVolume * 100) + '%';
-}
-
-document.getElementById('volume-down').addEventListener('click', function() {
-    if (currentVolume > 0) {
-        currentVolume = Math.max(0, currentVolume - 0.1);
-        setVolume(currentVolume);
-    }
-});
-
-document.getElementById('volume-up').addEventListener('click', function() {
-    if (currentVolume < 1) {
-        currentVolume = Math.min(1, currentVolume + 0.1);
-        setVolume(currentVolume);
-    }
-});
-
 function setVolume(volume) {
     currentVolume = volume;
     if (currentMusic) {
