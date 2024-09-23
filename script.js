@@ -197,7 +197,6 @@ function handleKeysMode(event) {
     if (currentKeys.includes(pressedKey)) {
         currentKeys = currentKeys.filter(key => key !== pressedKey);
         if (currentKeys.length === 0) {
-            score++;
             document.getElementById('score-value').textContent = score;
     playClearSound();
             startRound();
@@ -218,7 +217,6 @@ function handleDirectionsMode(event) {
     if (pressedDirection === currentDirections[0]) {
         currentDirections.shift();
         if (currentDirections.length === 0) {
-            score++;
             document.getElementById('score-value').textContent = score;
     playClearSound();
             startRound();
@@ -234,7 +232,6 @@ function handleTypingMode(event) {
         typingCount++;
         document.getElementById('keys-display').textContent = `Ctrl 키를 ${typingGoal - typingCount}번 더 누르세요!`;
         if (typingCount >= typingGoal) {
-            score++;
             document.getElementById('score-value').textContent = score;
     playClearSound();
             startRound();
@@ -245,7 +242,6 @@ function handleTypingMode(event) {
 function handlePointingMode(event) {
     if (isGameOver) return; 
     if (event.target.id === 'target') {
-                score++;
         document.getElementById('score-value').textContent = score;
     playClearSound();
         startRound();
@@ -355,7 +351,6 @@ function handleSpinMode(event) {
         rotations = 0;
 
 if (spinCount >= requiredSpins) {
-    score++;
     document.getElementById('score-value').textContent = score;
     playClearSound();
     startRound();
@@ -409,6 +404,7 @@ function startRound() {
     clearTimeout(window.roundTimer);
     window.roundTimer = setTimeout(gameOver, timeLimit);
     score += difficultyScores[currentDifficulty];
+    document.getElementById('score-value').textContent = score;
 }
 
 document.getElementById('spin-area').addEventListener('mousemove', function(event) {
@@ -521,7 +517,6 @@ function getSlightlyDifferentColor(baseColor) {
 function handleColorTileClick(isCorrect) {
     if (isGameOver) return; 
     if (isCorrect) {
-        score++;
         document.getElementById('score-value').textContent = score;
         playClearSound();
         startRound();
