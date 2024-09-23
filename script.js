@@ -87,8 +87,21 @@ function resetGame() {
     mainScreen.style.justifyContent = 'center';
     mainScreen.style.alignItems = 'center';
     }, 100);
+    updateMainLeaderboard();
 }
 
+function updateMainLeaderboard() {
+    const mainScoreList = document.getElementById('main-score-list');
+    mainScoreList.innerHTML = '';
+    const topScores = scores.slice(0, 10);
+    topScores.forEach((score, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${score.name}: ${score.score}`;
+        mainScoreList.appendChild(li);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', updateMainLeaderboard);
 
 function getRandomKey() {
     const keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

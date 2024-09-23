@@ -243,6 +243,7 @@ body {
 
 #main-screen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -481,4 +482,40 @@ body {
 #score-list li {
     margin: 10px 0;
     font-size: 16px;
+}
+
+#main-leaderboard {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+}
+
+#main-leaderboard h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#main-score-list {
+    padding-left: 20px;
+    margin: 0;
+}
+
+#main-score-list li {
+    margin-bottom: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#difficulty-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
