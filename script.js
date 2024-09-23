@@ -558,3 +558,36 @@ function createModeDisplay() {
         document.body.appendChild(modeDisplay);
     }
 }
+
+let scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+document.getElementById('register-score-button').addEventListener('click', registerScore);
+document.getElementById('close-leaderboard').addEventListener('click', closeLeaderboard);
+
+function registerScore() {
+    const playerName = prompt('이름을 입력하세요:');
+    if (playerName) {
+        const score = parseInt(document.getElementById('final-score').textContent);
+        scores.push({name: playerName, score: score});
+        scores.sort((a, b) => b.score - a.score);
+        scores = scores.slice(0, 10);  // 상위 10개 점수만 유지
+        localStorage.setItem('scores', JSON.stringify(scores));
+        showLeaderboard();
+    }
+}
+
+function showLeaderboard() {
+    const leaderboard = document.getElementById('leaderboard');
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = '';
+    scores.forEach((score, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${index + 1}. ${score.name}: ${score.score}`;
+        scoreList.appendChild(li);
+    });
+    leaderboard.style.display = 'block';
+}
+
+function closeLeaderboard() {
+    document.getElementById('leaderboard').style.display = 'none';
+}

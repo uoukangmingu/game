@@ -60,12 +60,19 @@
 </audio>
 
     <div id="game-over" style="display: none;">
-        <h1>게임 오버</h1>
-        <p>최종 점수: <span id="final-score"></span></p>
-        <button id="restart-button">다시하기</button>
-        <button id="main-menu-button">메인화면</button>
-    </div>
+    <h1>게임 오버!</h1>
+    <p>최종 점수: <span id="final-score"></span></p>
+    <button id="restart-button">다시 시작</button>
+    <button id="main-menu-button">메인 메뉴</button>
+    <button id="register-score-button">점수 등록</button>
+</div>
 
+<!-- 점수판 추가 -->
+<div id="leaderboard" style="display: none;">
+    <h2>점수판</h2>
+    <ul id="score-list"></ul>
+    <button id="close-leaderboard">닫기</button>
+</div>
     <script src="script.js"></script>
 </body>
 </html>
