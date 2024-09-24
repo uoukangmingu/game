@@ -173,7 +173,7 @@ function displayDirections() {
 function startTypingMode() {
     typingCount = 0;
     typingGoal = Math.floor(Math.random() * 12) + 1; // 1에서 12 사이의 랜덤 숫자
-    document.getElementById('keys-display').textContent = `Ctrl 키를 ${typingGoal}번 누르세요!`;
+    document.getElementById('keys-display').textContent = `Ctrl 키를 ${typingGoal}번 눌러라!`;
     document.getElementById('keys-display').style.display = 'block';
     document.getElementById('directions-display').style.display = 'none';
     document.getElementById('point-game').style.display = 'none';
