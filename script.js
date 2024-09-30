@@ -213,6 +213,7 @@ document.getElementById('directions-display').style.display = 'none';
 document.getElementById('point-game').style.display = 'none';
 document.getElementById('spin-game').style.display = 'none';
 document.getElementById('color-game').style.display = 'none'; 
+document.getElementById('ascend').style.display = 'none'; 
 }
 
 
@@ -407,7 +408,7 @@ const recentModes = [];
 const RECENT_MODES_TO_REMEMBER = 3;
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color'];
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend'];
     const availableModes = modes.filter(mode => !recentModes.includes(mode));
     
     if (availableModes.length === 0) {
@@ -442,6 +443,8 @@ function startRound() {
         startPointingMode();
     } else if (gameMode === 'spin') {
         startSpinMode();
+    } else if (gameMode === 'ascend') {
+        startAscendMode();
     }
     resetTimerBar();
     roundStartTime = Date.now();
@@ -493,6 +496,9 @@ function updateGameModeDisplay() {
             break;
         case 'color':
             modeDisplay.textContent = 'Color!';
+            break;
+        case 'ascend':
+            modeDisplay.textContent = 'Ascend!';
             break;
     }
 }
@@ -687,7 +693,8 @@ const TutorialModule = {
     { image: 'img/tutorial_image3.png', text: 'Catch! : Catch the target on the screen.' },
     { image: 'img/tutorial_image4.png', text: 'Spin! : Spin circles with the mouse.' },
     { image: 'img/tutorial_image5.png', text: 'Color! : Click on a tile in a different color.' },
-    { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the <ctrl> key in a row.' }
+    { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the <ctrl> key in a row.' },
+    { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high' }
   ],
   
   start() {
@@ -735,3 +742,57 @@ document.addEventListener('DOMContentLoaded', () => {
     closeTutorialButton.addEventListener('click', () => TutorialModule.close());
   }
 });
+
+
+
+function startAscendMode() {
+    hideAllGameModes();
+    gameMode = 'ascend';
+    const ascendGame = document.getElementById('ascend');
+    ascendGame.style.display = 'block';
+    ascendClickCount = 0;  // 클릭 카운트 초기화
+    createAscendPoints();
+}
+
+
+function createAscendPoints() {
+    const ascendGame = document.getElementById('ascend');
+    ascendGame.innerHTML = '';
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const points = [];
+    for (let i = 0; i < 3; i++) {
+        const point = document.createElement('div');
+        point.className = 'ascend-point';
+        point.style.left = Math.random() * 80 + 10 + '%';
+        point.style.top = Math.random() * 80 + 10 + '%';
+        const index = Math.floor(Math.random() * numbers.length);
+        const number = numbers.splice(index, 1)[0];  // 사용한 숫자는 제거
+        point.textContent = number;
+        point.dataset.number = number;
+        point.addEventListener('click', handleAscendClick);
+        ascendGame.appendChild(point);
+        points.push(point);
+    }
+    points.sort((a, b) => a.dataset.number - b.dataset.number);
+    window.ascendOrder = points.map(p => parseInt(p.dataset.number));
+}
+
+
+let ascendClickCount = 0;
+
+function handleAscendClick(event) {
+    if (isGameOver) return;
+    const clickedNumber = parseInt(event.target.dataset.number);
+    if (clickedNumber === window.ascendOrder[ascendClickCount]) {
+        ascendClickCount++;
+        event.target.style.backgroundColor = 'green';
+        if (ascendClickCount === 3) {
+            playClearSound();
+            score += difficultyScores[currentDifficulty];
+            document.getElementById('score-value').textContent = score;
+            startRound();
+        }
+    } else {
+        gameOver();
+    }
+}
