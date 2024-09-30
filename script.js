@@ -18,13 +18,13 @@ function playMusic(difficulty) {
 
     let musicId;
     switch(difficulty) {
-        case 2000:
+        case 2300:
             musicId = 'easy-music';
             break;
         case 1800:
             musicId = 'normal-music';
             break;
-        case 1500:
+        case 1300:
             musicId = 'hard-music';
             break;
         default:
@@ -381,7 +381,7 @@ function handleSpinMode(event) {
     const angle = Math.atan2(event.clientY - centerY, event.clientX - centerX);
     const angleDiff = angle - lastAngle;
 
-    if (angleDiff > Math.PI) {
+    if (angleDiff > 2 * Math.PI) {
         rotations--;
     } else if (angleDiff < -Math.PI) {
         rotations++;
@@ -634,9 +634,9 @@ function closeLeaderboard() {
 }
 
 let difficultyScores = {
-    2000: 15,  // 쉬움
+    2300: 13,  // 쉬움
     1800: 18, // 보통
-    1500: 20  // 어려움
+    1300: 23  // 어려움
 };
 
 function updateScore(difficulty) {
@@ -676,4 +676,62 @@ function playButtonSound() {
 // 모든 버튼에 효과음 추가
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', playButtonSound);
+});
+
+// 튜토리얼 모듈
+const TutorialModule = {
+  currentStep: 0,
+  steps: [
+    { image: 'img/tutorial_image1.png', text: 'Type! : Type the key that appears on the screen.' },
+    { image: 'img/tutorial_image2.png', text: 'Direction! : Press the arrow key in the indicated direction.' },
+    { image: 'img/tutorial_image3.png', text: 'Catch! : Catch the target on the screen.' },
+    { image: 'img/tutorial_image4.png', text: 'Spin! : Spin circles with the mouse.' },
+    { image: 'img/tutorial_image5.png', text: 'Color! : Click on a tile in a different color.' },
+    { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the <ctrl> key in a row.' }
+  ],
+  
+  start() {
+    this.currentStep = 0;
+    document.getElementById('tutorial-container').style.display = 'block';
+    this.showStep();
+  },
+  
+  showStep() {
+    if (this.currentStep >= this.steps.length) {
+      document.getElementById('tutorial-container').style.display = 'none';
+      return;
+    }
+    
+    const step = this.steps[this.currentStep];
+    document.getElementById('tutorial-content').innerHTML = `
+      <img src="${step.image}" alt="Tutorial step ${this.currentStep + 1}">
+      <p>${step.text}</p>
+    `;
+  },
+  
+  nextStep() {
+    this.currentStep++;
+    this.showStep();
+  },
+  
+  close() {
+    document.getElementById('tutorial-container').style.display = 'none';
+  }
+};
+document.addEventListener('DOMContentLoaded', () => {
+  const tutorialButton = document.getElementById('tutorial-button');
+  const nextStepButton = document.getElementById('next-step');
+  const closeTutorialButton = document.getElementById('close-tutorial');
+
+  if (tutorialButton) {
+    tutorialButton.addEventListener('click', () => TutorialModule.start());
+  }
+
+  if (nextStepButton) {
+    nextStepButton.addEventListener('click', () => TutorialModule.nextStep());
+  }
+
+  if (closeTutorialButton) {
+    closeTutorialButton.addEventListener('click', () => TutorialModule.close());
+  }
 });

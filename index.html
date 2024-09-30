@@ -1,27 +1,39 @@
-﻿<html lang="ko">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Focus Game - Test your reaction time and concentration skills!">
     <title>Focus Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="main-screen">
-    <button id="play-button" class="retro-button">PLAY</button>
-    <div id="difficulty-buttons" style="display: none;">
-        <button class="difficulty-btn" data-time="2000">EASY</button>
-        <button class="difficulty-btn" data-time="1800">NORMAL</button>
-        <button class="difficulty-btn" data-time="1500">HARD</button>
-    </div>
-<div id="volume-control-container">
-    <span id="volume-label">VOLUME</span>
-        <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1">
+        <button id="tutorial-button" class="retro-button"><span>Tutorial</span></button>
+        <button id="play-button" class="retro-button">PLAY</button>
+        <div id="difficulty-buttons" style="display: none;">
+            <button class="difficulty-btn" data-time="2000">EASY</button>
+            <button class="difficulty-btn" data-time="1800">NORMAL</button>
+            <button class="difficulty-btn" data-time="1500">HARD</button>
+        </div>
+<div id="tutorial-container" style="display: none;">
+  <h2>Tutorial</h2>
+  <div id="tutorial-content"></div>
+  <div class="tutorial-buttons">
+    <button id="next-step">Next▶</button>
+    <button id="close-tutorial">Close</button>
+  </div>
 </div>
-    <div id="main-leaderboard">
-        <h3>Top 10 Scores</h3>
-        <h5></h5>
-        <ol id="main-score-list"></ol>
-    </div>
+
+        <div id="volume-control-container">
+            <span id="volume-label">VOLUME</span>
+            <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1" aria-label="Volume Control">
+        </div>
+        <div id="main-leaderboard">
+            <h3>Top 10 Scores</h3>
+            <h5></h5>
+            <ol id="main-score-list"></ol>
+        </div>
     </div>
     <div id="countdown" style="display: none;">
         <h2>FOCUS</h2>
@@ -38,7 +50,7 @@
     <div id="spin-area">
         <div id="spin-target"></div>
     </div>
-    <div id="spin-count">회전 수: <span id="current-spins">0</span> / <span id="required-spins">0</span></div>
+    <div id="spin-count">Spins : <span id="current-spins">0</span> / <span id="required-spins">0</span></div>
 </div>
 <div id="color-game" style="display: none;"></div>
 
