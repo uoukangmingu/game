@@ -659,6 +659,8 @@ body {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+    min-width: 30px;
+    min-height: 30px;
 }
 
 .ascend-point:hover {

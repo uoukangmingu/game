@@ -18,13 +18,13 @@ function playMusic(difficulty) {
 
     let musicId;
     switch(difficulty) {
-        case 2300:
+        case 2000:
             musicId = 'easy-music';
             break;
         case 1800:
             musicId = 'normal-music';
             break;
-        case 1300:
+        case 1500:
             musicId = 'hard-music';
             break;
         default:
@@ -640,9 +640,9 @@ function closeLeaderboard() {
 }
 
 let difficultyScores = {
-    2300: 13,  // 쉬움
+    2000: 13,  // 쉬움
     1800: 18, // 보통
-    1300: 23  // 어려움
+    1500: 23  // 어려움
 };
 
 function updateScore(difficulty) {
@@ -760,22 +760,45 @@ function createAscendPoints() {
     ascendGame.innerHTML = '';
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const points = [];
+    const minDistance = 50; // 최소 거리 설정
+
     for (let i = 0; i < 3; i++) {
+        let x, y;
+        let validPosition = false;
+
+        while (!validPosition) {
+            x = Math.random() * 80 + 10;
+            y = Math.random() * 80 + 10;
+            validPosition = true;
+
+            // 이미 생성된 점들과의 거리 확인
+            for (let j = 0; j < points.length; j++) {
+                const dx = x - points[j].x;
+                const dy = y - points[j].y;
+                const distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < minDistance) {
+                    validPosition = false;
+                    break;
+                }
+            }
+        }
+
         const point = document.createElement('div');
         point.className = 'ascend-point';
-        point.style.left = Math.random() * 80 + 10 + '%';
-        point.style.top = Math.random() * 80 + 10 + '%';
+        point.style.left = x + '%';
+        point.style.top = y + '%';
         const index = Math.floor(Math.random() * numbers.length);
-        const number = numbers.splice(index, 1)[0];  // 사용한 숫자는 제거
+        const number = numbers.splice(index, 1)[0];
         point.textContent = number;
         point.dataset.number = number;
         point.addEventListener('click', handleAscendClick);
         ascendGame.appendChild(point);
-        points.push(point);
+        points.push({x, y, element: point});
     }
-    points.sort((a, b) => a.dataset.number - b.dataset.number);
-    window.ascendOrder = points.map(p => parseInt(p.dataset.number));
+
+    window.ascendOrder = points.map(p => parseInt(p.element.dataset.number)).sort((a, b) => a - b);
 }
+
 
 
 let ascendClickCount = 0;
