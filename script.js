@@ -709,7 +709,8 @@ const TutorialModule = {
     { image: 'img/tutorial_image4.png', text: 'Spin! : Spin circles with the mouse.' },
     { image: 'img/tutorial_image5.png', text: 'Color! : Click on a tile in a different color.' },
     { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the <ctrl> key in a row.' },
-    { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high' }
+    { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high' },
+    { image: 'img/tutorial_image8.png', text: 'Hacking! : Hit any keys to hack' }
   ],
   
   start() {
