@@ -221,7 +221,17 @@ document.getElementById('ascend').style.display = 'none';
 
 function handleKeyPress(event) {
     if (isGameOver) return;  // 게임 오버 상태면 키 입력 무시
-
+    if (gameMode === 'hacking') {
+        if (/^[a-zA-Z]$/.test(event.key)) {
+            hackingCount++;
+            updateHackingDisplay();
+            createHackingEffect();
+            if (hackingCount >= hackingGoal) {
+                playClearSound();
+                startRound();
+            }
+        }
+    }
     if (gameMode === 'keys') {
         handleKeysMode(event);
     } else if (gameMode === 'directions') {
@@ -408,7 +418,7 @@ const recentModes = [];
 const RECENT_MODES_TO_REMEMBER = 3;
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend'];
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend', 'hacking'];
     const availableModes = modes.filter(mode => !recentModes.includes(mode));
     
     if (availableModes.length === 0) {
@@ -445,6 +455,8 @@ function startRound() {
         startSpinMode();
     } else if (gameMode === 'ascend') {
         startAscendMode();
+    } else if (gameMode === 'hacking') {
+        startHackingMode();
     }
     resetTimerBar();
     roundStartTime = Date.now();
@@ -499,6 +511,9 @@ function updateGameModeDisplay() {
             break;
         case 'ascend':
             modeDisplay.textContent = 'Ascend!';
+            break;
+        case 'hacking':
+            modeDisplay.textContent = 'Hacking!';
             break;
     }
 }
@@ -762,7 +777,7 @@ function createAscendPoints() {
     const points = [];
     const minDistance = 50; // 최소 거리 설정
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         let x, y;
         let validPosition = false;
 
@@ -809,7 +824,7 @@ function handleAscendClick(event) {
     if (clickedNumber === window.ascendOrder[ascendClickCount]) {
         ascendClickCount++;
         event.target.style.backgroundColor = 'green';
-        if (ascendClickCount === 3) {
+        if (ascendClickCount === 2) {
             playClearSound();
             score += difficultyScores[currentDifficulty];
             document.getElementById('score-value').textContent = score;
@@ -818,4 +833,46 @@ function handleAscendClick(event) {
     } else {
         gameOver();
     }
+}
+
+
+let hackingCount = 0;
+const hackingGoal = 30;
+function startHackingMode() {
+    hideAllGameModes();
+    gameMode = 'hacking';
+    hackingCount = 0;
+    document.getElementById('hacking-display').style.display = 'block';
+    updateHackingDisplay();
+}
+function updateHackingDisplay() {
+    const progress = (hackingCount / hackingGoal) * 100;
+    document.getElementById('hacking-progress').style.width = `${progress}%`;
+    document.getElementById('hacking-display').textContent = `Hack Progress: ${hackingCount}/${hackingGoal}`;
+}
+
+function createHackingEffect() {
+    const effect = document.createElement('div');
+    effect.textContent = String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+    effect.style.position = 'absolute';
+    effect.style.left = Math.random() * window.innerWidth + 'px';
+    effect.style.top = Math.random() * window.innerHeight + 'px';
+    effect.style.color = '#00ff00'; // 더 밝은 초록색
+    effect.style.textShadow = '0 0 5px #00ff00, 0 0 10px #00ff00'; // 글로우 효과
+    effect.style.fontSize = '30px'; // 더 큰 폰트 크기
+    effect.style.fontWeight = 'bold'; // 굵은 글씨
+    effect.style.fontFamily = '"Courier New", monospace';
+    effect.style.zIndex = '9999'; // 항상 최상위에 표시
+    document.body.appendChild(effect);
+    
+    // 페이드 아웃 애니메이션
+    let opacity = 1;
+    const fadeOut = setInterval(() => {
+        opacity -= 0.1;
+        effect.style.opacity = opacity;
+        if (opacity <= 0) {
+            clearInterval(fadeOut);
+            effect.remove();
+        }
+    }, 50);
 }
