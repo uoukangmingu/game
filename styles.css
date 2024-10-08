@@ -697,3 +697,25 @@ body.hacking-mode {
     background-color: #000;
     color: #00ff00;
 }
+
+#fullscreen {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: 2px solid var(--accent-color);
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: var(--game-font);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+#fullscreen:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+#fullscreen::before {
+    content: "\26F6";
+    margin-right: 5px;
+}
