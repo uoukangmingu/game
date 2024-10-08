@@ -877,3 +877,13 @@ function createHackingEffect() {
         }
     }, 50);
 }
+
+document.getElementById('fullscreen').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+});
