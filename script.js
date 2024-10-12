@@ -18,10 +18,10 @@ function playMusic(difficulty) {
 
     let musicId;
     switch(difficulty) {
-        case 2000:
+        case 6000:
             musicId = 'easy-music';
             break;
-        case 1800:
+        case 3000:
             musicId = 'normal-music';
             break;
         case 1500:
@@ -661,9 +661,9 @@ function closeLeaderboard() {
 }
 
 let difficultyScores = {
-    '2000': 13,  // 쉬움
-    '1800': 18, // 보통
-    '1500': 23  // 어려움
+    '6000': 15,  // 쉬움
+    '3000': 30, // 보통
+    '1500': 60  // 어려움
 };
 
 function updateScore(difficulty) {
@@ -903,6 +903,22 @@ function startPrecisionTimeMode() {
 }
 
 function createPrecisionTimeGame() {
+    let targetWidth, speed;
+    switch(currentDifficulty) {
+        case 6000: // 쉬움
+            targetWidth = 70;
+            speed = 1;
+            break;
+        case 3000: // 보통
+            targetWidth = 50;
+            speed = 1.5;
+            break;
+        case 1500: // 어려움
+            targetWidth = 30;
+            speed = 2;
+            break;
+    }
+    
     const game = document.getElementById('precision-time-game');
     game.innerHTML = `
         <div id="pt-bar">
@@ -914,15 +930,18 @@ function createPrecisionTimeGame() {
     const cursor = document.getElementById('pt-cursor');
     const target = document.getElementById('pt-target');
     
-    target.style.left = Math.random() * 80 + 10 + '%';
+    target.style.width = targetWidth + 'px';
+    
+    const barWidth = bar.offsetWidth;
+    
+    target.style.left = (Math.random() * (barWidth - targetWidth)) + 'px';
     
     let position = 0;
-    const speed = 2;
     let animationId;
     const animateCursor = () => {
         position += speed;
-        if (position > 100) position = 0;
-        cursor.style.left = position + '%';
+        if (position > barWidth) position = -targetWidth;
+        cursor.style.left = position + 'px';
         animationId = requestAnimationFrame(animateCursor);
     };
     animationId = requestAnimationFrame(animateCursor);
@@ -933,14 +952,15 @@ function createPrecisionTimeGame() {
     };
 }
 
+
 function handlePrecisionTimeKeyPress(event) {
     if (event.code === 'Space') {
         const cursor = document.getElementById('pt-cursor');
         const target = document.getElementById('pt-target');
-        const cursorPos = cursor.offsetLeft;
-        const targetPos = target.offsetLeft;
+        const cursorRect = cursor.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
         
-        if (Math.abs(cursorPos - targetPos) < 15) {
+        if (cursorRect.right > targetRect.left && cursorRect.left < targetRect.right) {
             playClearSound();
             score += difficultyScores[currentDifficulty];
             document.getElementById('score-value').textContent = score;
