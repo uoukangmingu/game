@@ -780,9 +780,22 @@ body.hacking-mode {
 
 #focus, #game {
     position: absolute;
-    font-size: 8rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10vw; 
+    max-font-size: 8rem;
+    text-align: center;
+    width: 100%;
+    margin: 5vh 0; 
     font-weight: bold;
     text-shadow: 0 0 10px var(--retro-light-green);
+}
+
+@media (max-width: 768px) {
+    #focus, #game {
+        font-size: 15vw;
+    }
 }
 
 #focus {
