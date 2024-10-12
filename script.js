@@ -3,7 +3,7 @@ let currentKeys = [];
 let currentDirections = [];
 let typingCount = 0;
 let typingGoal = 0;
-let timeLimit = 1800;
+let timeLimit = 3000;
 let gameMode = 'keys';
 let roundStartTime;
 const directions = ['left', 'up', 'right', 'down'];
@@ -213,7 +213,8 @@ document.getElementById('directions-display').style.display = 'none';
 document.getElementById('point-game').style.display = 'none';
 document.getElementById('spin-game').style.display = 'none';
 document.getElementById('color-game').style.display = 'none'; 
-document.getElementById('ascend').style.display = 'none'; 
+document.getElementById('ascend').style.display = 'none';
+document.getElementById('precision-time-game').style.display = 'none';
 }
 
 
@@ -418,7 +419,7 @@ const recentModes = [];
 const RECENT_MODES_TO_REMEMBER = 3;
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend', 'hacking'];
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend', 'hacking', 'precisionTime'];
     const availableModes = modes.filter(mode => !recentModes.includes(mode));
     
     if (availableModes.length === 0) {
@@ -457,6 +458,8 @@ function startRound() {
         startAscendMode();
     } else if (gameMode === 'hacking') {
         startHackingMode();
+    } else if (gameMode === 'precisionTime') {
+        startPrecisionTimeMode();
     }
     resetTimerBar();
     roundStartTime = Date.now();
@@ -514,6 +517,9 @@ function updateGameModeDisplay() {
             break;
         case 'hacking':
             modeDisplay.textContent = 'Hacking!';
+            break;
+        case 'precisionTime':
+            modeDisplay.textContent = 'Timing!';
             break;
     }
 }
@@ -655,9 +661,9 @@ function closeLeaderboard() {
 }
 
 let difficultyScores = {
-    2000: 13,  // 쉬움
-    1800: 18, // 보통
-    1500: 23  // 어려움
+    '2000': 13,  // 쉬움
+    '1800': 18, // 보통
+    '1500': 23  // 어려움
 };
 
 function updateScore(difficulty) {
@@ -885,5 +891,70 @@ document.getElementById('fullscreen').addEventListener('click', () => {
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
+    }
+});
+
+// Precision Time 게임 모드
+function startPrecisionTimeMode() {
+    hideAllGameModes();
+    gameMode = 'precisionTime';
+    document.getElementById('precision-time-game').style.display = 'block';
+    createPrecisionTimeGame();
+}
+
+function createPrecisionTimeGame() {
+    const game = document.getElementById('precision-time-game');
+    game.innerHTML = `
+        <div id="pt-bar">
+            <div id="pt-cursor"></div>
+            <div id="pt-target"></div>
+        </div>
+    `;
+    const bar = document.getElementById('pt-bar');
+    const cursor = document.getElementById('pt-cursor');
+    const target = document.getElementById('pt-target');
+    
+    target.style.left = Math.random() * 80 + 10 + '%';
+    
+    let position = 0;
+    const speed = 2;
+    let animationId;
+    const animateCursor = () => {
+        position += speed;
+        if (position > 100) position = 0;
+        cursor.style.left = position + '%';
+        animationId = requestAnimationFrame(animateCursor);
+    };
+    animationId = requestAnimationFrame(animateCursor);
+    
+    // 애니메이션 정지 함수 추가
+    game.stopAnimation = () => {
+        cancelAnimationFrame(animationId);
+    };
+}
+
+function handlePrecisionTimeKeyPress(event) {
+    if (event.code === 'Space') {
+        const cursor = document.getElementById('pt-cursor');
+        const target = document.getElementById('pt-target');
+        const cursorPos = cursor.offsetLeft;
+        const targetPos = target.offsetLeft;
+        
+        if (Math.abs(cursorPos - targetPos) < 15) {
+            playClearSound();
+            score += difficultyScores[currentDifficulty];
+            document.getElementById('score-value').textContent = score;
+            document.getElementById('precision-time-game').stopAnimation();
+            startRound();
+        } else {
+            document.getElementById('precision-time-game').stopAnimation();
+            gameOver();
+        }
+    }
+}
+
+document.addEventListener('keydown', (event) => {
+    if (gameMode === 'precisionTime') {
+        handlePrecisionTimeKeyPress(event);
     }
 });
