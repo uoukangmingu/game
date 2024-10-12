@@ -978,3 +978,51 @@ document.addEventListener('keydown', (event) => {
         handlePrecisionTimeKeyPress(event);
     }
 });
+
+
+document.getElementById('play-button').addEventListener('click', startLogoAnimation);
+
+function startLogoAnimation() {
+  const logoAnimation = document.getElementById('logo-animation');
+  logoAnimation.style.display = 'flex';
+  
+  const gameSound = new Audio('sounds/game_sound.mp3'); // 'GAME' 효과음
+  const focusSound = new Audio('sounds/focus_sound.mp3'); // 'FOCUS' 효과음
+  
+  anime({
+    targets: '#game',
+    filter: ['blur(10px)', 'blur(0px)'],
+    duration: 2000,
+    easing: 'easeInOutQuad',
+    begin: function() {
+      gameSound.play(); // 'GAME' 애니메이션 시작 시 효과음 재생
+    }
+  });
+
+  anime({
+    targets: '#focus',
+    opacity: [0, 1],
+    duration: 2000,
+    delay: 1000,
+    easing: 'easeInOutQuad',
+    begin: function() {
+      setTimeout(() => focusSound.play(), 1000); // 'FOCUS' 애니메이션 시작 1초 후 효과음 재생
+    },
+    complete: function() {
+      // 로고 애니메이션이 끝나면 페이드 아웃
+      setTimeout(() => {
+        anime({
+          targets: '#logo-animation',
+          opacity: [1, 0],
+          duration: 1000,
+          easing: 'easeOutQuad',
+          complete: function() {
+            logoAnimation.style.display = 'none';
+            document.getElementById('difficulty-buttons').style.display = 'flex';
+          }
+        });
+      }, 1000);
+    }
+  });
+}
+
