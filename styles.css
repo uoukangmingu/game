@@ -8,6 +8,7 @@
 }
 
 body {
+    cursor: url('img/mouse1.png'), auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,6 +22,13 @@ body {
         var(--retro-black) 10px,
         var(--retro-black) 20px
     );
+}
+.retro-button {
+    cursor: url('img/mouse1.png'), auto;
+}
+
+.retro-button:hover {
+    cursor: url('img/mouse3.png'), pointer;
 }
 
 #game-container {
@@ -183,6 +191,7 @@ body {
 #restart-button:hover {
     transform: translateY(2px);
     box-shadow: 0 3px 0 var(--retro-dark-green);
+    cursor: url('img/mouse3.png'), pointer;
 }
 
 #restart-button:active {
@@ -215,6 +224,7 @@ body {
 
 #target:hover {
     transform: scale(1.1);
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 @keyframes score-pop {
@@ -282,6 +292,7 @@ body {
 .difficulty-btn:hover, #main-menu-button:hover {
     transform: translateY(2px);
     box-shadow: 0 3px 0 #333;
+    cursor: url('img/mouse3.png'), pointer;
 }
 
 #countdown {
@@ -305,6 +316,7 @@ body {
 #restart-button:hover, #main-menu-button:hover {
     transform: translateY(2px);
     box-shadow: 0 3px 0 var(--retro-dark-green);
+    cursor: url('img/mouse3.png'), pointer;
 }
 
 #restart-button:active, #main-menu-button:active {
@@ -383,6 +395,7 @@ body {
 }
 .color-tile:hover {
     transform: scale(1.05);
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 
@@ -439,16 +452,36 @@ body {
     transform: translateX(-50%);
     background-color: var(--retro-light-green);
     color: var(--retro-black);
-    padding: 15px 30px;
+    padding: 15px 50px;
     border-radius: 15px;
     border: 5px solid var(--retro-black);
     font-family: 'Press Start 2P', cursive;
-    font-size: 24px;
+    font-size: clamp(16px, 4vw, 24px);
     font-weight: bold;
     text-transform: uppercase;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-
+    white-space: pre-line;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    min-width: 300px;
 }
+
+@media (max-width: 768px) {
+    #mode-display {
+        padding: 10px 20px;
+        border-width: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    #mode-display {
+        top: 10px;
+        padding: 8px 15px;
+        border-width: 2px;
+    }
+}
+
 
 
 
@@ -618,6 +651,7 @@ body {
 #next-step:hover, #close-tutorial:hover {
   transform: translateY(2px);
   box-shadow: 0 1px 0 var(--retro-dark-green);
+    cursor: url('img/mouse3.png'), pointer;
 }
 
 #tutorial-content {
@@ -637,14 +671,49 @@ body {
   
   #tutorial-content {
     font-size: 12px;
+
   }
 }
 
 .tutorial-buttons {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
 }
+
+#next-step, #close-tutorial {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(12px, 3vw, 18px);
+    padding: clamp(8px, 2vw, 15px) clamp(12px, 3vw, 20px);
+    background-color: var(--retro-light-green);
+    color: var(--retro-black);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 0 var(--retro-dark-green);
+}
+
+@media screen and (max-width: 480px) {
+    #tutorial-container {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .tutorial-buttons {
+        flex-direction: column;
+    }
+
+    #next-step, #close-tutorial {
+        font-size: 14px;
+        padding: 8px 12px;
+        margin: 5px 0;
+    }
+}
+
+
 
 .ascend-point {
     position: absolute;
@@ -666,6 +735,7 @@ body {
 
 .ascend-point:hover {
     background-color: var(--retro-dark-green);
+    cursor: url('img/mouse2.png'), pointer;
 }
 #hacking-mode {
     display: none;
@@ -720,6 +790,7 @@ body.hacking-mode {
     color: var(--retro-light-green); 
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    cursor: url('img/mouse3.png'), pointer;
 }
 
 #fullscreen::before {

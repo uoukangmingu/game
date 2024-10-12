@@ -1,4 +1,4 @@
-﻿﻿﻿let score = 0;
+﻿﻿﻿﻿let score = 0;
 let currentKeys = [];
 let currentDirections = [];
 let typingCount = 0;
@@ -495,31 +495,31 @@ function updateGameModeDisplay() {
     const modeDisplay = document.getElementById('mode-display');
     switch(gameMode) {
         case 'keys':
-            modeDisplay.textContent = 'Type!';
+            modeDisplay.textContent = 'Type!\n화면에 표시된\n알파벳을 눌러라!';
             break;
         case 'directions':
-            modeDisplay.textContent = 'Direction!';
+            modeDisplay.textContent = 'Direction!\n화면에 표시된 방향키를\n순서대로 눌러라!';
             break;
         case 'typing':
-            modeDisplay.textContent = 'Beat!';
+            modeDisplay.textContent = 'Beat!\n[Ctrl]키를 눌러라!';
             break;
         case 'pointing':
-            modeDisplay.textContent = 'Catch!';
+            modeDisplay.textContent = 'Catch!\n마우스로 공을 잡아라!';
             break;
         case 'spin':
-            modeDisplay.textContent = 'Spin!';
+            modeDisplay.textContent = 'Spin!\n마우스로 원을 그려라!';
             break;
         case 'color':
-            modeDisplay.textContent = 'Color!';
+            modeDisplay.textContent = 'Color!\n다른 색 하나를 골라내라!';
             break;
         case 'ascend':
-            modeDisplay.textContent = 'Ascend!';
+            modeDisplay.textContent = 'Ascend!\n낮은 숫자를 누른고!\n높은 숫자를 누르고!';
             break;
         case 'hacking':
-            modeDisplay.textContent = 'Hacking!';
+            modeDisplay.textContent = 'Hacking!\n키보드를 연타해서 해킹해라!';
             break;
         case 'precisionTime':
-            modeDisplay.textContent = 'Timing!';
+            modeDisplay.textContent = 'Timing!\n타이밍에 맞게\n[스페이스바]를 눌러라!';
             break;
     }
 }
@@ -714,9 +714,10 @@ const TutorialModule = {
     { image: 'img/tutorial_image3.png', text: 'Catch! : Catch the target on the screen.' },
     { image: 'img/tutorial_image4.png', text: 'Spin! : Spin circles with the mouse.' },
     { image: 'img/tutorial_image5.png', text: 'Color! : Click on a tile in a different color.' },
-    { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the <ctrl> key in a row.' },
+    { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the [ctrl] key in a row.' },
     { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high' },
-    { image: 'img/tutorial_image8.png', text: 'Hacking! : Hit any keys to hack' }
+    { image: 'img/tutorial_image8.png', text: 'Hacking! : Hit any keys to hack' },
+    { image: 'img/tutorial_image9.png', text: 'Timing! : Press [space bar] when it on' }
   ],
   
   start() {
@@ -907,15 +908,15 @@ function createPrecisionTimeGame() {
     switch(currentDifficulty) {
         case 6000: // 쉬움
             targetWidth = 70;
-            speed = 1;
+            speed = 3;
             break;
         case 3000: // 보통
             targetWidth = 50;
-            speed = 1.5;
+            speed = 4;
             break;
         case 1500: // 어려움
             targetWidth = 30;
-            speed = 2;
+            speed = 5;
             break;
     }
     
