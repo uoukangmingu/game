@@ -10,6 +10,46 @@ const directions = ['left', 'up', 'right', 'down'];
 let usedKeys = [];
 let currentMusic = null;
 
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function enforcePortraitMode() {
+    if (isMobileDevice()) {
+        const lockPortraitOrientation = () => {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('portrait').catch(() => {
+                    console.log('화면 방향 고정을 지원하지 않는 기기입니다.');
+                });
+            }
+        };
+
+        window.addEventListener('load', lockPortraitOrientation);
+        window.addEventListener('orientationchange', lockPortraitOrientation);
+
+        // CSS를 이용해 세로 모드 강제
+        const style = document.createElement('style');
+        style.textContent = `
+            @media screen and (orientation: landscape) {
+                body {
+                    transform: rotate(-90deg);
+                    transform-origin: left top;
+                    width: 100vh;
+                    height: 100vw;
+                    overflow-x: hidden;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// 게임 시작 시 이 함수를 호출
+enforcePortraitMode();
+
 function playMusic(difficulty) {
     if (currentMusic) {
         currentMusic.pause();
@@ -146,17 +186,118 @@ function getRandomKey() {
 function getRandomDirection() {
     return directions[Math.floor(Math.random() * directions.length)];
 }
+// 모바일용 버튼 생성 함수
+function createMobileButtons() {
+    const buttonContainer = document.createElement('div');
+    buttonContainer.id = 'mobile-buttons';
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'center';
+    buttonContainer.style.marginTop = '20px';
+
+    const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const buttonLetters = [...currentKeys];
+    
+    while (buttonLetters.length < 5) {
+        const randomLetter = allLetters[Math.floor(Math.random() * allLetters.length)];
+        if (!buttonLetters.includes(randomLetter)) {
+            buttonLetters.push(randomLetter);
+        }
+    }
+
+    // Fisher-Yates 셔플 알고리즘
+    for (let i = buttonLetters.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [buttonLetters[i], buttonLetters[j]] = [buttonLetters[j], buttonLetters[i]];
+    }
+
+    buttonLetters.forEach(letter => {
+        const button = document.createElement('button');
+        button.textContent = letter;
+        button.classList.add('mobile-button');
+        button.style.margin = '0 5px';
+        button.style.padding = '10px 20px';
+        button.style.fontSize = '20px';
+        button.addEventListener('click', () => {
+            handleMobileKeyPress(letter);
+            playButtonSound();
+            button.classList.add('pressed'); 
+            button.classList.add('mobile-button');
+            setTimeout(() => button.classList.remove('pressed'), 200);  // 200ms 후 클래스 제거
+        });
+        buttonContainer.appendChild(button);
+    });
+
+    document.getElementById('game-container').appendChild(buttonContainer);
+}
+
+// 모바일 버튼 클릭 처리 함수
+function handleMobileKeyPress(letter) {
+    if (currentKeys.includes(letter)) {
+        currentKeys = currentKeys.filter(key => key !== letter);
+        if (currentKeys.length === 0) {
+            playClearSound();
+            startRound();
+        }
+    }
+}
 
 function displayKeys() {
     currentKeys = [getRandomKey(), getRandomKey()];
     const keyDisplay = document.getElementById('keys-display');
     keyDisplay.textContent = currentKeys.join(' ');
     keyDisplay.classList.remove('shake');
-    void keyDisplay.offsetWidth; // 리플로우 강제 발생
+    void keyDisplay.offsetWidth;
     keyDisplay.classList.add('shake');
-    document.getElementById('directions-display').style.    display = 'none';
+    document.getElementById('directions-display').style.display = 'none';
     document.getElementById('point-game').style.display = 'none';
     keyDisplay.style.display = 'block';
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        createMobileButtons();
+    }
+}
+
+function createDirectionButtons() {
+    const buttonContainer = document.createElement('div');
+    buttonContainer.id = 'mobile-direction-buttons';
+    buttonContainer.style.display = 'grid';
+    buttonContainer.style.gridTemplateAreas = 
+        '"   .    up     .   " ' +
+        '"left  down  right"';
+    buttonContainer.style.gap = '10px';
+    buttonContainer.style.justifyContent = 'center';
+    buttonContainer.style.marginTop = '20px';
+
+    const directions = ['up', 'down', 'left', 'right'];
+    directions.forEach(dir => {
+        const button = document.createElement('button');
+        button.textContent = dir.toUpperCase();
+        button.classList.add('mobile-button');
+        button.classList.add('pressed'); 
+        button.style.padding = '15px';
+        button.style.fontSize = '18px';
+        button.style.gridArea = dir;
+button.addEventListener('click', () => {
+handleDirectionPress(dir);
+playButtonSound();
+button.classList.add('pressed');
+setTimeout(() => button.classList.remove('pressed'), 100); 
+});
+buttonContainer.appendChild(button);
+});
+
+    document.getElementById('game-container').appendChild(buttonContainer);
+}
+
+function handleDirectionPress(direction) {
+    if (currentDirections[0] === direction) {
+        currentDirections.shift();
+        if (currentDirections.length === 0) {
+            playClearSound();
+            startRound();
+        }
+    } else {
+        gameOver();
+    }
 }
 
 function displayDirections() {
@@ -272,6 +413,45 @@ function handleDirectionsMode(event) {
         }
     } else if (pressedDirection) {
         gameOver();
+    }
+}
+
+function createCtrlButton() {
+    const buttonContainer = document.createElement('div');
+    buttonContainer.id = 'mobile-ctrl-button';
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'center';
+    buttonContainer.style.marginTop = '20px';
+
+const button = document.createElement('button');
+button.textContent = 'Ctrl';
+button.classList.add('mobile-button'); // 클래스 추가
+button.classList.add('pressed'); 
+button.style.padding = '15px 30px';
+button.style.fontSize = '20px';
+button.style.backgroundColor = 'var(--retro-dark-green)';
+button.style.color = 'var(--retro-beige)'; 
+button.style.border = '2px solid var(--retro-black)';
+button.style.borderRadius = '0';
+button.style.boxShadow = '3px 3px 0 var(--retro-black)';
+button.addEventListener('click', () => {
+    handleCtrlPress();
+    playButtonSound();
+    button.classList.add('pressed');
+    setTimeout(() => button.classList.remove('pressed'), 100);
+});
+buttonContainer.appendChild(button);
+
+
+document.getElementById('game-container').appendChild(buttonContainer);
+}
+
+function handleCtrlPress() {
+    typingCount++;
+    document.getElementById('keys-display').textContent = `Ctrl 키를 ${typingGoal - typingCount}번 더 누르세요!`;
+    if (typingCount >= typingGoal) {
+        playClearSound();
+        startRound();
     }
 }
 
@@ -417,17 +597,20 @@ const recentModes = [];
 const RECENT_MODES_TO_REMEMBER = 3;
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend', 'hacking', 'precisionTime', 'rockPaperScissors'];
-    const availableModes = modes.filter(mode => !recentModes.includes(mode));
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'color', 'ascend', 'precisionTime', 'rockPaperScissors'];
     
-    if (availableModes.length === 0) {
-        // 모든 모드가 최근에 사용되었다면 가장 오래된 것부터 제거
-        recentModes.shift();
+    if (isMobileDevice()) {
+        // 모바일에서는 'spin', 'hacking' 모드 제외
+        const availableModes = modes.filter(mode => mode !== 'hacking' && !recentModes.includes(mode));
+        gameMode = availableModes[Math.floor(Math.random() * availableModes.length)];
+    } else {
+        // 데스크톱에서는 모든 모드 포함
+        const allModes = [...modes, 'spin', 'hacking'];
+        const availableModes = allModes.filter(mode => !recentModes.includes(mode));
+        gameMode = availableModes[Math.floor(Math.random() * availableModes.length)];
     }
     
-    gameMode = availableModes[Math.floor(Math.random() * availableModes.length)];
     recentModes.push(gameMode);
-    
     if (recentModes.length > RECENT_MODES_TO_REMEMBER) {
         recentModes.shift();
     }
@@ -440,6 +623,42 @@ function startRound() {
     hideAllGameModes();
     switchGameMode();
     updateGameModeDisplay();
+    
+    const existingButtons = document.getElementById('mobile-buttons');
+    if (existingButtons) existingButtons.remove();
+    const existingDirectionButtons = document.getElementById('mobile-direction-buttons');
+    if (existingDirectionButtons) existingDirectionButtons.remove();
+    const existingCtrlButton = document.getElementById('mobile-ctrl-button');
+    if (existingCtrlButton) existingCtrlButton.remove();
+    const existingSpaceBarButton = document.getElementById('mobile-spacebar-button');
+    if (existingSpaceBarButton) existingSpaceBarButton.remove();
+
+    const mobileButtonContainers = [
+        'mobile-buttons',
+        'mobile-direction-buttons',
+        'mobile-ctrl-button',
+        'mobile-hacking-buttons',
+        'mobile-spacebar-button'
+    ];
+
+    mobileButtonContainers.forEach(containerId => {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = ''; // 버튼들을 모두 제거
+        }
+    });
+
+    if (isMobileDevice()) {
+        if (gameMode === 'keys') {
+            createMobileButtons();
+        } else if (gameMode === 'directions') {
+            createDirectionButtons();
+        } else if (gameMode === 'typing') {
+            createCtrlButton();
+        } else if (gameMode === 'precisionTime') {
+            createSpaceBarButton();
+        }
+    }
     if (gameMode === 'keys') {
         displayKeys();
     } else if (gameMode === 'directions') {
@@ -461,6 +680,7 @@ function startRound() {
     } else if (gameMode === 'rockPaperScissors') {
         startRockPaperScissorsMode();
     }
+    
     resetTimerBar();
     roundStartTime = Date.now();
     clearTimeout(window.roundTimer);
@@ -468,6 +688,8 @@ function startRound() {
     score += difficultyScores[currentDifficulty];
     document.getElementById('score-value').textContent = score;
 }
+
+
 
 document.getElementById('spin-area').addEventListener('mousemove', function(event) {
     if (gameMode === 'spin') {
@@ -664,9 +886,9 @@ function closeLeaderboard() {
 }
 
 let difficultyScores = {
-    '6000': 15,  // 쉬움
-    '3000': 30, // 보통
-    '1500': 60  // 어려움
+    '6000': 10,  // 쉬움
+    '3000': 20, // 보통
+    '1500': 80  // 어려움
 };
 
 function updateScore(difficulty) {
@@ -864,6 +1086,7 @@ function handleAscendClick(event) {
 
 let hackingCount = 0;
 const hackingGoal = 30;
+
 function startHackingMode() {
     hideAllGameModes();
     gameMode = 'hacking';
@@ -913,7 +1136,59 @@ document.getElementById('fullscreen').addEventListener('click', () => {
     }
 });
 
-// Precision Time 게임 모드
+
+function createSpaceBarButton() {
+    const buttonContainer = document.createElement('div');
+    buttonContainer.id = 'mobile-spacebar-button';
+    buttonContainer.style.position = 'fixed';
+    buttonContainer.style.bottom = '20px';
+    buttonContainer.style.left = '0';
+    buttonContainer.style.width = '100%';
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'center';
+
+const button = document.createElement('button');
+button.textContent = 'SPACE';
+button.classList.add('mobile-button');
+button.classList.add('pressed'); // 버튼 클릭 시 'pressed' 클래스 추가
+button.style.padding = '15px 50px';
+button.style.fontSize = '20px';
+button.style.backgroundColor = 'var(--retro-dark-green)'; // 레트로 스타일의 색상 적용
+button.style.color = 'var(--retro-beige)';
+button.style.border = '2px solid var(--retro-black)';
+button.style.borderRadius = '0'; // 사각형 버튼 모양
+button.style.boxShadow = '3px 3px 0 var(--retro-black)';
+button.addEventListener('click', () => {
+    handlePrecisionTimeSpacePress();
+    playButtonSound();
+    button.classList.add('pressed');
+    setTimeout(() => button.classList.remove('pressed'), 200);
+});
+
+
+    
+    buttonContainer.appendChild(button);
+    document.body.appendChild(buttonContainer);
+}
+
+function handlePrecisionTimeSpacePress() {
+    const cursor = document.getElementById('pt-cursor');
+    const target = document.getElementById('pt-target');
+    const cursorRect = cursor.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    
+    if (cursorRect.right > targetRect.left && cursorRect.left < targetRect.right) {
+        playClearSound();
+        score += difficultyScores[currentDifficulty];
+        document.getElementById('score-value').textContent = score;
+        document.getElementById('precision-time-game').stopAnimation();
+        startRound();
+    } else {
+        document.getElementById('precision-time-game').stopAnimation();
+        gameOver();
+    }
+}
+
 function startPrecisionTimeMode() {
     hideAllGameModes();
     gameMode = 'precisionTime';
@@ -1026,7 +1301,7 @@ function startLogoAnimation() {
     }
   })
   .add({
-    targets: '#game',
+    targets: '#FOCUS',
     filter: ['blur(10px)', 'blur(0px)'],
     opacity: [0, 1],
     duration: 2000,
@@ -1035,7 +1310,7 @@ function startLogoAnimation() {
     }
   })
   .add({
-    targets: '#focus',
+    targets: '#GAME',
     opacity: [0, 1],
     duration: 2000,
     begin: function() {
@@ -1045,27 +1320,38 @@ function startLogoAnimation() {
 }
 
 function startRockPaperScissorsMode() {
-    hideAllGameModes();
-    gameMode = 'rockPaperScissors';
-    const choices = ['rock', 'paper', 'scissors'];
-    const instructions = ['이겨라', '져라', '비겨라'];
-    
-    const computerChoice = choices[Math.floor(Math.random() * 3)];
-    const instruction = instructions[Math.floor(Math.random() * 3)];
-    
-    const rpsGame = document.getElementById('rps-game');
-    rpsGame.style.display = 'flex';
-    
-    document.getElementById('rps-display').textContent = computerChoice;
-    document.getElementById('rps-instruction').textContent = instruction;
-    
-    document.querySelectorAll('#rps-buttons button').forEach(button => {
-        button.onclick = (e) => handleRPSChoice(e.target.id, computerChoice, instruction);
-    });
-    
-    resetTimerBar();
-    // 타이머 설정 부분 제거
+hideAllGameModes();
+gameMode = 'rockPaperScissors';
+const choices = ['rock', 'paper', 'scissors'];
+const instructions = ['이겨라', '져라', '비겨라'];
+
+
+const computerChoice = choices[Math.floor(Math.random() * 3)];
+const instruction = instructions[Math.floor(Math.random() * 3)];
+
+const rpsGame = document.getElementById('rps-game');
+rpsGame.style.display = 'flex';
+
+    if (isMobileDevice()) {
+        rpsGame.style.flexDirection = 'column'; 
+        rpsGame.style.alignItems = 'center';
+        
+        const rpsButtons = document.getElementById('rps-buttons');
+        rpsButtons.style.flexDirection = 'column';
+        rpsButtons.style.gap = '10px';
+       }
+
+document.getElementById('rps-display').textContent = computerChoice;
+document.getElementById('rps-instruction').textContent = instruction;
+
+document.querySelectorAll('#rps-buttons button').forEach(button => {
+    button.onclick = (e) => handleRPSChoice(e.target.id, computerChoice, instruction);
+});
+
+resetTimerBar();
+// 타이머 설정 부분 제거
 }
+
 
 function handleRPSChoice(playerChoice, computerChoice, instruction) {
     // clearTimeout 제거 (타이머를 여기서 관리하지 않음)
@@ -1095,4 +1381,3 @@ function handleRPSChoice(playerChoice, computerChoice, instruction) {
         gameOver();
     }
 }
-
