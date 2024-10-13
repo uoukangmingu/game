@@ -1177,15 +1177,16 @@ function handlePrecisionTimeSpacePress() {
     const cursorRect = cursor.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
     
-    if (cursorRect.right > targetRect.left && cursorRect.left < targetRect.right) {
+if (cursorRect.right > targetRect.left && cursorRect.left < targetRect.right) {
         playClearSound();
         score += difficultyScores[currentDifficulty];
         document.getElementById('score-value').textContent = score;
         document.getElementById('precision-time-game').stopAnimation();
         startRound();
     } else {
-        document.getElementById('precision-time-game').stopAnimation();
-        gameOver();
+document.getElementById('precision-time-game').stopAnimation();
+gameOver();
+document.getElementById('mobile-spacebar-button').remove();
     }
 }
 
