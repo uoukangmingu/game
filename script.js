@@ -215,10 +215,8 @@ document.getElementById('spin-game').style.display = 'none';
 document.getElementById('color-game').style.display = 'none'; 
 document.getElementById('ascend').style.display = 'none';
 document.getElementById('precision-time-game').style.display = 'none';
+document.getElementById('rps-game').style.display = 'none';
 }
-
-
-
 
 function handleKeyPress(event) {
     if (isGameOver) return;  // 게임 오버 상태면 키 입력 무시
@@ -419,7 +417,7 @@ const recentModes = [];
 const RECENT_MODES_TO_REMEMBER = 3;
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend', 'hacking', 'precisionTime'];
+    const modes = ['keys', 'directions', 'typing', 'pointing', 'spin', 'color', 'ascend', 'hacking', 'precisionTime', 'rockPaperScissors'];
     const availableModes = modes.filter(mode => !recentModes.includes(mode));
     
     if (availableModes.length === 0) {
@@ -460,6 +458,8 @@ function startRound() {
         startHackingMode();
     } else if (gameMode === 'precisionTime') {
         startPrecisionTimeMode();
+    } else if (gameMode === 'rockPaperScissors') {
+        startRockPaperScissorsMode();
     }
     resetTimerBar();
     roundStartTime = Date.now();
@@ -520,6 +520,9 @@ function updateGameModeDisplay() {
             break;
         case 'precisionTime':
             modeDisplay.textContent = 'Timing!\n타이밍에 맞게\n[스페이스바]를 눌러라!';
+            break;
+        case 'rockPaperScissors':
+            modeDisplay.textContent = '가위바위보!\n지시에 따라\n가위, 바위, 보를 선택하라!';
             break;
     }
 }
@@ -1025,3 +1028,56 @@ function startLogoAnimation() {
     }
   }, '-=1000'); // FOCUS 애니메이션을 GAME 애니메이션 1초 후에 시작
 }
+
+function startRockPaperScissorsMode() {
+    hideAllGameModes();
+    gameMode = 'rockPaperScissors';
+    const choices = ['rock', 'paper', 'scissors'];
+    const instructions = ['이겨라', '져라', '비겨라'];
+    
+    const computerChoice = choices[Math.floor(Math.random() * 3)];
+    const instruction = instructions[Math.floor(Math.random() * 3)];
+    
+    const rpsGame = document.getElementById('rps-game');
+    rpsGame.style.display = 'flex';
+    
+    document.getElementById('rps-display').textContent = computerChoice;
+    document.getElementById('rps-instruction').textContent = instruction;
+    
+    document.querySelectorAll('#rps-buttons button').forEach(button => {
+        button.onclick = (e) => handleRPSChoice(e.target.id, computerChoice, instruction);
+    });
+    
+    resetTimerBar();
+    // 타이머 설정 부분 제거
+}
+
+function handleRPSChoice(playerChoice, computerChoice, instruction) {
+    // clearTimeout 제거 (타이머를 여기서 관리하지 않음)
+    let result;
+    if (playerChoice === computerChoice) {
+        result = 'draw';
+    } else if (
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'paper' && computerChoice === 'rock') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper')
+    ) {
+        result = 'win';
+    } else {
+        result = 'lose';
+    }
+    
+    if (
+        (instruction === '이겨라' && result === 'win') ||
+        (instruction === '져라' && result === 'lose') ||
+        (instruction === '비겨라' && result === 'draw')
+    ) {
+        score += difficultyScores[currentDifficulty];
+        document.getElementById('score-value').textContent = score;
+        playClearSound();
+        startRound();
+    } else {
+        gameOver();
+    }
+}
+

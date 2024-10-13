@@ -878,3 +878,36 @@ body.hacking-mode {
     top: 60%;
     color: var(--retro-light-green);
 }
+
+#rps-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#rps-display, #rps-instruction {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#rps-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#rps-buttons button {
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: var(--retro-dark-green);
+    color: var(--retro-beige);
+    border: 2px solid var(--retro-black);
+    font-family: 'Press Start 2P', cursive;
+}
+
+#rps-buttons button:hover {
+    background-color: var(--retro-light-green);
+}
