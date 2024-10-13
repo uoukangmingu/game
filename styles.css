@@ -28,7 +28,7 @@ body {
 }
 
 .retro-button:hover {
-    cursor: url('img/mouse3.png'), pointer;
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 #game-container {
@@ -191,7 +191,7 @@ body {
 #restart-button:hover {
     transform: translateY(2px);
     box-shadow: 0 3px 0 var(--retro-dark-green);
-    cursor: url('img/mouse3.png'), pointer;
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 #restart-button:active {
@@ -292,7 +292,7 @@ body {
 .difficulty-btn:hover, #main-menu-button:hover {
     transform: translateY(2px);
     box-shadow: 0 3px 0 #333;
-    cursor: url('img/mouse3.png'), pointer;
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 #countdown {
@@ -316,7 +316,7 @@ body {
 #restart-button:hover, #main-menu-button:hover {
     transform: translateY(2px);
     box-shadow: 0 3px 0 var(--retro-dark-green);
-    cursor: url('img/mouse3.png'), pointer;
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 #restart-button:active, #main-menu-button:active {
@@ -651,7 +651,7 @@ body {
 #next-step:hover, #close-tutorial:hover {
   transform: translateY(2px);
   box-shadow: 0 1px 0 var(--retro-dark-green);
-    cursor: url('img/mouse3.png'), pointer;
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 #tutorial-content {
@@ -790,7 +790,7 @@ body.hacking-mode {
     color: var(--retro-light-green); 
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-    cursor: url('img/mouse3.png'), pointer;
+    cursor: url('img/mouse2.png'), pointer;
 }
 
 #fullscreen::before {
