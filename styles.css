@@ -636,7 +636,7 @@ body {
   to { opacity: 1; }
 }
 
-#next-step, #close-tutorial {
+#next-step, #past-step, #close-tutorial {
   font-family: 'Press Start 2P', cursive;
   background-color: var(--retro-light-green);
   color: var(--retro-black);
@@ -648,7 +648,7 @@ body {
   box-shadow: 0 3px 0 var(--retro-dark-green);
 }
 
-#next-step:hover, #close-tutorial:hover {
+#next-step:hover, #past-step:hover, #close-tutorial:hover {
   transform: translateY(2px);
   box-shadow: 0 1px 0 var(--retro-dark-green);
     cursor: url('img/mouse2.png'), pointer;
@@ -683,7 +683,7 @@ body {
     width: 100%;
 }
 
-#next-step, #close-tutorial {
+#next-step, #past-step, #close-tutorial {
     font-family: 'Press Start 2P', cursive;
     font-size: clamp(12px, 3vw, 18px);
     padding: clamp(8px, 2vw, 15px) clamp(12px, 3vw, 20px);
@@ -706,7 +706,7 @@ body {
         flex-direction: column;
     }
 
-    #next-step, #close-tutorial {
+    #next-step, #past-step, #close-tutorial {
         font-size: 14px;
         padding: 8px 12px;
         margin: 5px 0;
@@ -900,6 +900,7 @@ body.hacking-mode {
 
 #rps-buttons button {
     font-size: 18px;
+    margin: 0 10px;
     padding: 10px 20px;
     cursor: pointer;
     background-color: var(--retro-dark-green);
@@ -910,4 +911,32 @@ body.hacking-mode {
 
 #rps-buttons button:hover {
     background-color: var(--retro-light-green);
+}
+
+#spin-direction {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: var(--retro-light-green);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#spin-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid var(--retro-light-green);
+    transform: translate(-50%, -50%) rotate(90deg);
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: translate(-50%, -50%) rotate(90deg); }
+    to { transform: translate(-50%, -50%) rotate(450deg); }
 }

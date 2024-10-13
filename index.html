@@ -22,6 +22,7 @@
   <h2>Tutorial</h2>
   <div id="tutorial-content"></div>
   <div class="tutorial-buttons">
+    <button id="past-step">Past◀</button>
     <button id="next-step">Next▶</button>
     <button id="close-tutorial">Close</button>
   </div>
@@ -53,15 +54,16 @@
 </div>
 
         <div id="directions-display"></div>
-<div id="rps-game" style="display: none;">
+<div id="rps-game" class="game-mode">
     <div id="rps-display"></div>
     <div id="rps-instruction"></div>
     <div id="rps-buttons">
-        <button id="rock">바위</button>
-        <button id="paper">보</button>
-        <button id="scissors">가위</button>
+        <button id="rock">rock</button>
+        <button id="scissors">scissors</button>
+        <button id="paper">paper</button>
     </div>
 </div>
+
 
 <div id="hacking-mode" class="game-mode">
     <h2>Hacking Mode</h2>
@@ -83,9 +85,12 @@
 <div id="spin-game" style="display: none;">
     <div id="spin-area">
         <div id="spin-target"></div>
+        <div id="spin-indicator"></div>
+        <div id="spin-direction">시계 방향</div>
     </div>
     <div id="spin-count">Spins : <span id="current-spins">0</span> / <span id="required-spins">0</span></div>
 </div>
+
 <div id="color-game" style="display: none;"></div>
 
         <div id="timer-bar"></div>

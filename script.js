@@ -522,7 +522,7 @@ function updateGameModeDisplay() {
             modeDisplay.textContent = 'Timing!\n타이밍에 맞게\n[스페이스바]를 눌러라!';
             break;
         case 'rockPaperScissors':
-            modeDisplay.textContent = '가위바위보!\n지시에 따라\n가위, 바위, 보를 선택하라!';
+            modeDisplay.textContent = '가위바위보!\n지시에 따라\n[가위][바위][보]를 선택하라!';
             break;
     }
 }
@@ -715,12 +715,13 @@ const TutorialModule = {
     { image: 'img/tutorial_image1.png', text: 'Type! : Type the key that appears on the screen.' },
     { image: 'img/tutorial_image2.png', text: 'Direction! : Press the arrow key in the indicated direction.' },
     { image: 'img/tutorial_image3.png', text: 'Catch! : Catch the target on the screen.' },
-    { image: 'img/tutorial_image4.png', text: 'Spin! : Spin circles with the mouse.' },
+    { image: 'img/tutorial_image4.png', text: 'Spin! : Spin circles with the mouse. clockwise.' },
     { image: 'img/tutorial_image5.png', text: 'Color! : Click on a tile in a different color.' },
     { image: 'img/tutorial_image6.png', text: 'Beat! : Beat the [ctrl] key in a row.' },
-    { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high' },
-    { image: 'img/tutorial_image8.png', text: 'Hacking! : Hit any keys to hack' },
-    { image: 'img/tutorial_image9.png', text: 'Timing! : Press [space bar] when it on' }
+    { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high.' },
+    { image: 'img/tutorial_image8.png', text: 'Hacking! : Hit any keys to hack.' },
+    { image: 'img/tutorial_image9.png', text: 'Timing! : Press [space bar] when it on' },
+    { image: 'img/tutorial_image10.png', text: 'RockPaperScissors! : Press [Rock][Paper][Scissors] according to instructions' }
   ],
   
   start() {
@@ -746,6 +747,15 @@ const TutorialModule = {
     this.currentStep++;
     this.showStep();
   },
+pastStep() {
+    this.currentStep--;
+    if (this.currentStep < 0) { // 0 이하로 떨어진 경우
+        this.close(); // 튜토리얼 창을 닫는다
+    } else {
+        this.showStep();
+    }
+}
+,
   
   close() {
     document.getElementById('tutorial-container').style.display = 'none';
@@ -754,10 +764,15 @@ const TutorialModule = {
 document.addEventListener('DOMContentLoaded', () => {
   const tutorialButton = document.getElementById('tutorial-button');
   const nextStepButton = document.getElementById('next-step');
+  const pastStepButton = document.getElementById('past-step');
   const closeTutorialButton = document.getElementById('close-tutorial');
 
   if (tutorialButton) {
     tutorialButton.addEventListener('click', () => TutorialModule.start());
+  }
+
+  if (nextStepButton) {
+    pastStepButton.addEventListener('click', () => TutorialModule.pastStep());
   }
 
   if (nextStepButton) {
@@ -865,7 +880,7 @@ function updateHackingDisplay() {
 function createHackingEffect() {
     const effect = document.createElement('div');
     effect.textContent = String.fromCharCode(Math.floor(Math.random() * 26) + 65);
-    effect.style.position = 'absolute';
+    effect.style.position = 'fixed';
     effect.style.left = Math.random() * window.innerWidth + 'px';
     effect.style.top = Math.random() * window.innerHeight + 'px';
     effect.style.color = '#00ff00'; // 더 밝은 초록색
