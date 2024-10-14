@@ -600,11 +600,9 @@ function switchGameMode() {
     const modes = ['keys', 'directions', 'typing', 'pointing', 'color', 'ascend', 'precisionTime', 'rockPaperScissors'];
     
     if (isMobileDevice()) {
-        // 모바일에서는 'spin', 'hacking' 모드 제외
-        const availableModes = modes.filter(mode => mode !== 'hacking' && !recentModes.includes(mode));
+        const availableModes = modes.filter(mode => mode !== 'hacking' && mode !== 'spin');
         gameMode = availableModes[Math.floor(Math.random() * availableModes.length)];
     } else {
-        // 데스크톱에서는 모든 모드 포함
         const allModes = [...modes, 'spin', 'hacking'];
         const availableModes = allModes.filter(mode => !recentModes.includes(mode));
         gameMode = availableModes[Math.floor(Math.random() * availableModes.length)];
@@ -637,7 +635,6 @@ function startRound() {
         'mobile-buttons',
         'mobile-direction-buttons',
         'mobile-ctrl-button',
-        'mobile-hacking-buttons',
         'mobile-spacebar-button'
     ];
 
