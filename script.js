@@ -1,4 +1,4 @@
-﻿﻿﻿﻿let score = 0;
+﻿﻿﻿﻿﻿let score = 0;
 let currentKeys = [];
 let currentDirections = [];
 let typingCount = 0;
@@ -349,15 +349,17 @@ function resetTimerBar() {
 
 
 function hideAllGameModes() {
-document.getElementById('keys-display').style.display = 'none';
-document.getElementById('directions-display').style.display = 'none';
-document.getElementById('point-game').style.display = 'none';
-document.getElementById('spin-game').style.display = 'none';
-document.getElementById('color-game').style.display = 'none'; 
-document.getElementById('ascend').style.display = 'none';
-document.getElementById('precision-time-game').style.display = 'none';
-document.getElementById('rps-game').style.display = 'none';
+  document.getElementById('keys-display').style.display = 'none';
+  document.getElementById('directions-display').style.display = 'none';
+  document.getElementById('point-game').style.display = 'none';
+  document.getElementById('spin-game').style.display = 'none';
+  document.getElementById('color-game').style.display = 'none'; 
+  document.getElementById('ascend').style.display = 'none';
+  document.getElementById('precision-time-game').style.display = 'none';
+  document.getElementById('rps-game').style.display = 'none';
+  document.getElementById('color-match-game').style.display = 'none';  // Added ColorMatchMode
 }
+
 
 function handleKeyPress(event) {
     if (isGameOver) return;  // 게임 오버 상태면 키 입력 무시
@@ -597,7 +599,7 @@ const recentModes = [];
 const RECENT_MODES_TO_REMEMBER = 3;
 
 function switchGameMode() {
-    const modes = ['keys', 'directions', 'typing', 'pointing', 'color', 'ascend', 'precisionTime', 'rockPaperScissors'];
+  const modes = ['keys', 'directions', 'typing', 'pointing', 'color', 'ascend', 'precisionTime', 'rockPaperScissors', 'colorMatch'];
     
     if (isMobileDevice()) {
         const availableModes = modes.filter(mode => mode !== 'hacking' && mode !== 'spin');
@@ -676,6 +678,8 @@ function startRound() {
         startPrecisionTimeMode();
     } else if (gameMode === 'rockPaperScissors') {
         startRockPaperScissorsMode();
+    } else if (gameMode === 'colorMatch') {
+        startColorMatchMode();
     }
     
     resetTimerBar();
@@ -741,7 +745,10 @@ function updateGameModeDisplay() {
             modeDisplay.textContent = 'Timing!\n타이밍에 맞게\n[스페이스바]를 눌러라!';
             break;
         case 'rockPaperScissors':
-            modeDisplay.textContent = '가위바위보!\n지시에 따라\n[가위][바위][보]를 선택하라!';
+            modeDisplay.textContent = 'RCP!\n지시에 따라\n[가위][바위][보]를 선택하라!';
+            break;
+        case 'colorMatch':
+            modeDisplay.textContent = '컬러 매치!\n같은 색을 선택하라!';
             break;
     }
 }
@@ -940,7 +947,8 @@ const TutorialModule = {
     { image: 'img/tutorial_image7.png', text: 'Ascend! : Click from low to high.' },
     { image: 'img/tutorial_image8.png', text: 'Hacking! : Hit any keys to hack.' },
     { image: 'img/tutorial_image9.png', text: 'Timing! : Press [space bar] when it on' },
-    { image: 'img/tutorial_image10.png', text: 'RockPaperScissors! : Press [Rock][Paper][Scissors] according to instructions' }
+    { image: 'img/tutorial_image10.png', text: 'RockPaperScissors! : Press [Rock][Paper][Scissors] according to instructions' },
+    { image: 'img/tutorial_image11.png', text: 'Color match! : Choose same color' }
   ],
   
   start() {
@@ -1377,5 +1385,53 @@ function handleRPSChoice(playerChoice, computerChoice, instruction) {
         startRound();
     } else {
         gameOver();
+    }
+}
+
+let presentedColor;
+
+function startColorMatchMode() {
+    hideAllGameModes();
+    gameMode = 'colorMatch';
+    const colorGame = document.getElementById('color-match-game');
+    colorGame.style.display = 'block';  // 게임 모드 화면 표시
+    const grid = document.getElementById('color-match-grid');
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(4, 1fr)';  // 4x4 그리드 설정
+
+    generateColorTiles();  // 타일 생성
+    resetTimerBar(timeLimit);  // 기존 타이머 사용
+}
+
+function generateColorTiles() {
+    const grid = document.getElementById('color-match-grid');
+    grid.innerHTML = '';  // 기존 타일 초기화
+
+    const baseColor = getRandomColor();  // 제시될 기본 색상
+    const differentColors = Array.from({ length: 15 }, () => getRandomColor());  // 다른 색상들 생성
+    const allColors = [...differentColors, baseColor].sort(() => Math.random() - 0.5);  // 색상을 섞음
+
+    document.getElementById('presented-color-tile').style.backgroundColor = baseColor;
+
+    allColors.forEach(color => {
+        const tile = document.createElement('div');
+        tile.className = 'color-tile';
+        tile.style.backgroundColor = color;
+        tile.addEventListener('click', () => handleColorTileClick(color === baseColor));
+        grid.appendChild(tile);
+    });
+}
+
+
+function handleColorTileClick(isCorrect) {
+    if (isCorrect) {
+        score += 10;
+        document.getElementById('score-value').textContent = score;
+        playClearSound();
+        
+        // 바로 다음 라운드 시작
+        startRound();
+    } else {
+        gameOver();  // 잘못된 타일을 클릭했으므로 게임오버
     }
 }

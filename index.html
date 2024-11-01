@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div id="crt-overlay"></div>
+    <div id="vhs-overlay"></div>
     <div id="main-screen">
         <button id="tutorial-button" class="retro-button"><span>Tutorial</span></button>
         <button id="play-button" class="retro-button">PLAY</button>
@@ -52,6 +54,12 @@
         <div id="keys-display"></div>
 <div id="ascend" class="game-mode" style="display: none;">
     <!-- 여기에 점들이 동적으로 추가될 거야 -->
+</div>
+
+<div id="color-match-game" class="game-mode" style="display: none;">
+    <div id="color-prompt"></div> <!-- 제시된 색상 텍스트 표시 -->
+    <div id="presented-color-tile"></div> <!-- 제시된 색상을 시각적으로 표시할 타일 -->
+    <div id="color-match-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"></div>
 </div>
 
         <div id="directions-display"></div>
