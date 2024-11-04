@@ -124,8 +124,6 @@ function resetGame() {
         document.getElementById('game-over').style.display = 'none';
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('main-screen').style.display = 'flex';
-        
-        document.getElementById('register-score-button').style.display = 'block';
 
         // 메인 화면 레이아웃 수정
         const mainScreen = document.getElementById('main-screen');
@@ -136,38 +134,18 @@ function resetGame() {
         // 난이도 버튼과 리더보드를 감싸는 div 생성
         const buttonsContainer = document.createElement('div');
         buttonsContainer.id = 'difficulty-buttons-container';
-        const leaderboardContainer = document.createElement('div');
-        leaderboardContainer.id = 'main-leaderboard-container';
 
         // 기존 요소들을 새 컨테이너로 이동
         buttonsContainer.appendChild(document.getElementById('difficulty-buttons'));
-        leaderboardContainer.appendChild(document.getElementById('main-leaderboard'));
 
         // 메인 화면에 새 컨테이너 추가
         mainScreen.appendChild(buttonsContainer);
-        mainScreen.appendChild(leaderboardContainer);
     }, 100);
 
     const gameOverScreen = document.getElementById('game-over');
     gameOverScreen.style.left = '50%';
     gameOverScreen.style.transform = 'translate(-50%, -50%)';
-
-    updateMainLeaderboard();
 }
-
-
-function updateMainLeaderboard() {
-    const mainScoreList = document.getElementById('main-score-list');
-    mainScoreList.innerHTML = '';
-    const topScores = scores.slice(0, 10);
-    topScores.forEach((score, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${score.name}: ${score.score}`;
-        mainScoreList.appendChild(li);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', updateMainLeaderboard);
 
 function getRandomKey() {
     const keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -507,7 +485,6 @@ function restartGame() {
         document.getElementById('keys-display').style.display = 'none';
         document.getElementById('directions-display').style.display = 'none';
         document.getElementById('point-game').style.display = 'none';
-        document.getElementById('register-score-button').style.display = 'block';
         const mainScreen = document.getElementById('main-screen');
         mainScreen.style.flexDirection = 'row';
         mainScreen.style.justifyContent = 'center';
@@ -618,6 +595,11 @@ function switchGameMode() {
 
 
 function startRound() {
+if (score >= 1000) {
+    gameCleared();
+    return;
+}
+
     isGameOver = false; 
     createModeDisplay();
     hideAllGameModes();
@@ -855,40 +837,6 @@ function createModeDisplay() {
     }
 }
 
-let scores = JSON.parse(localStorage.getItem('scores')) || [];
-
-document.getElementById('register-score-button').addEventListener('click', registerScore);
-document.getElementById('close-leaderboard').addEventListener('click', closeLeaderboard);
-
-function registerScore() {
-    const playerName = prompt('이름을 입력하세요:');
-    if (playerName) {
-        const score = parseInt(document.getElementById('final-score').textContent);
-        scores.push({name: playerName, score: score});
-        scores.sort((a, b) => b.score - a.score);
-        scores = scores.slice(0, 10);  // 상위 10개 점수만 유지
-        localStorage.setItem('scores', JSON.stringify(scores));
-        showLeaderboard();
-    }
-    document.getElementById('register-score-button').style.display = 'none';
-}
-
-function showLeaderboard() {
-    const leaderboard = document.getElementById('leaderboard');
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = '';
-    scores.forEach((score, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${index + 1}. ${score.name}: ${score.score}`;
-        scoreList.appendChild(li);
-    });
-    leaderboard.style.display = 'block';
-}
-
-function closeLeaderboard() {
-    document.getElementById('leaderboard').style.display = 'none';
-}
-
 let difficultyScores = {
     '6000': 10,  // 쉬움
     '3000': 20, // 보통
@@ -899,6 +847,8 @@ function updateScore(difficulty) {
     currentScore += difficultyScores[difficulty];
     document.getElementById('score').textContent = `Score: ${currentScore}`;
 }
+
+
 
 let currentVolume = 1;
 
@@ -1435,14 +1385,138 @@ function handleColorTileClick(isCorrect) {
         gameOver();  // 잘못된 타일을 클릭했으므로 게임오버
     }
 }
-
-document.getElementById('story-mode-btn').addEventListener('click', function() {
-    // 페이지 전체에 fade-out 클래스를 추가하여 디졸브 효과 시작
-    document.body.classList.add('fade-out');
-    
-    // 디졸브 효과가 끝난 후 페이지 이동
-    setTimeout(function() {
-        window.location.href = 'story/story.html';
-    }, 1000); // 애니메이션 시간과 맞춰 1초(1000ms) 후 이동
+// DAY1.html 파일에 추가: 페이지 로드 후 히스토리를 초기화하여 이동 방지
+window.addEventListener("load", () => {
+    // 현재 페이지를 유일한 히스토리 상태로 설정하여 이전 및 다음 페이지 버튼 비활성화
+    history.pushState(null, null, window.location.href);
+    window.addEventListener("popstate", () => {
+        history.pushState(null, null, window.location.href); // 히스토리 이동 시 다시 현재 페이지로 고정
+    });
 });
 
+function gameCleared() {
+    isGameOver = true;  // 게임 종료 상태로 설정
+    clearTimeout(window.roundTimer);  // 타이머 정지
+
+    // 게임 컨테이너와 메인 화면에 페이드 아웃 클래스 추가
+    document.getElementById('main-screen').classList.add('fade-out');
+    document.getElementById('game-container').classList.add('fade-out');
+
+    // 페이드 아웃이 끝난 후 클리어 화면 생성 및 페이드 인
+    setTimeout(() => {
+        // 게임 컨테이너와 메인 화면 숨기기
+        document.getElementById('main-screen').style.display = 'none';
+        document.getElementById('game-container').style.display = 'none';
+
+        // 클리어 화면 생성
+        const clearScreen = document.createElement('div');
+        clearScreen.id = 'game-cleared';
+        clearScreen.classList.add('fade-in');
+        clearScreen.innerHTML = `
+            <h1>CONGRATULATIONS!</h1>
+            <p>You've cleared the game with 1,000 points!</p>
+        `;
+        document.body.appendChild(clearScreen);
+
+        // 클리어 효과음 재생
+        const clearSound = document.getElementById('real-clear');
+        clearSound.currentTime = 0;  // 항상 처음부터 재생
+        clearSound.play().catch(error => console.log('효과음 재생 실패:', error));
+
+        // 배경 음악 멈춤
+        if (currentMusic) {
+            currentMusic.pause();
+            currentMusic.currentTime = 0;
+        }
+        
+        // 화면 또는 키 입력 대기 후 story2.html로 이동
+        const goToNext = () => {
+            window.location.replace('../story3.html');  // 히스토리를 삭제하고 이동
+        };
+
+        // 클릭 또는 키다운 이벤트 리스너 추가
+        document.addEventListener("click", goToNext, { once: true });
+        document.addEventListener("keydown", goToNext, { once: true });
+
+    }, 1000);
+}
+
+
+const dayStartScreen = document.getElementById("day-start-screen");
+const mainContent = document.getElementById("main-content");
+const noiseSound = document.getElementById("background-noise");
+
+dayStartScreen.addEventListener("click", () => {
+    // day-start-screen에 페이드 아웃 클래스 추가
+    dayStartScreen.classList.add("fade-out");
+
+    // 페이드 아웃이 완료된 후 main-content를 표시
+    setTimeout(() => {
+        dayStartScreen.style.display = "none";
+        mainContent.style.display = "block";
+        mainContent.classList.add("fade-in");
+
+        // 노이즈 사운드 페이드 인 재생
+        noiseSound.volume = 0;
+        noiseSound.play();
+        let volume = 0;
+        const fadeInInterval = setInterval(() => {
+            if (volume < 0.1) {
+                volume += 0.01;
+                noiseSound.volume = volume;
+            } else {
+                clearInterval(fadeInInterval);
+            }
+        }, 100);
+    }, 500); // 페이드 아웃 시간 후 실행
+});
+
+function fadeOutSound(audioElement, duration = 2000) {
+    let fadeOutInterval = setInterval(() => {
+        if (audioElement.volume > 0.01) {
+            audioElement.volume = Math.max(audioElement.volume - 0.01, 0);  // 볼륨 점진적 감소
+        } else {
+            clearInterval(fadeOutInterval);
+            audioElement.pause();
+            audioElement.currentTime = 0;
+            fadeInSound(audioElement, 1000);  // 페이드 인 속도 1초로 설정
+        }
+    }, duration / 100);
+}
+
+function fadeInSound(audioElement, duration = 1000) {  // 페이드 인 속도 1초
+    audioElement.volume = 0;  // 처음 볼륨 0에서 시작
+    audioElement.play();
+    let fadeInInterval = setInterval(() => {
+        if (audioElement.volume < 0.1) {  // 최종 볼륨을 낮춘 0.1로 설정
+            audioElement.volume = Math.min(audioElement.volume + 0.01, 0.1);  // 볼륨 점진적 증가
+        } else {
+            clearInterval(fadeInInterval);
+        }
+    }, duration / 100);
+}
+
+function triggerGlitchEffect() {
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) {
+        gameContainer.classList.add('glitch');
+
+        // 일정 시간이 지나면 글리치 효과 제거
+        setTimeout(() => {
+            gameContainer.classList.remove('glitch');
+        }, 300); // 글리치 지속 시간
+
+        // 일정 시간 후 다시 글리치 효과 실행
+        const randomInterval = Math.random() * 5000 + 5000; // 5~10초 간격으로 글리치 효과 발생
+        setTimeout(triggerGlitchEffect, randomInterval);
+    }
+}
+
+// 페이지 로드 시 글리치 효과 주기적 발생
+window.addEventListener('load', triggerGlitchEffect);
+
+function playHorrorSound(id) {
+    const sound = document.getElementById(id);
+    sound.volume = 0.8;
+    sound.play();
+}

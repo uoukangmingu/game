@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="Focus Game - Test your reaction time and concentration skills!">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=BM+Hanna&display=swap" rel="stylesheet">
     <title>Focus Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="day2.css">
 </head>
 <body>
+    <div id="day-start-screen">
+        <span id="day-start-text">DAY 2</span>
+    </div>
+    <div id="main-content" style="display: none;">
     <div id="crt-overlay"></div>
     <div id="vhs-overlay"></div>
     <div id="main-screen">
@@ -19,7 +24,6 @@
             <button class="difficulty-btn" data-time="6000">EASY</button>
             <button class="difficulty-btn" data-time="3000">NORMAL</button>
             <button class="difficulty-btn" data-time="1500">HARD</button>
-            <button id="story-mode-btn" class="difficulty-btn">STORY MODE</button>
         </div>
 <div id="tutorial-container" style="display: none;">
   <h2>Tutorial</h2>
@@ -36,11 +40,7 @@
             <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1" aria-label="Volume Control">
         <div id="screen-controls"> <button id="fullscreen"> </button> </div>
         </div>
-        <div id="main-leaderboard">
-            <h3>Top 10 Scores</h3>
-            <h5></h5>
-            <ol id="main-score-list"></ol>
-        </div>
+
     </div>
     <div id="countdown" style="display: none;">
         <h2>FOCUS</h2>
@@ -130,6 +130,12 @@
 </audio>
 <audio id="buttonSound" src="sounds/MP_스페이스바 터치음2(딸깍).mp3">
 </audio>
+<audio id="real-clear">
+    <source src="sounds/clear_effect.mp3" type="audio/mpeg">
+</audio>
+<audio id="background-noise" loop>
+    <source src="sounds/background_noise.mp3" type="audio/mpeg">
+</audio>
 
 
     <div id="game-over" style="display: none;">
@@ -137,15 +143,8 @@
     <p>Your Score: <span id="final-score"></span></p>
     <button id="restart-button">Restart</button>
     <button id="main-menu-button">Main Menu</button>
-    <button id="register-score-button">Score Record</button>
 </div>
-
-<!-- 점수판 추가 -->
-<div id="leaderboard" style="display: none;">
-    <h2>Score Board</h2>
-    <ul id="score-list"></ul>
-    <button id="close-leaderboard">Close</button>
-</div>
-    <script src="script.js"></script>
+    </div>
+    <script src="day2.js"></script>
 </body>
 </html>

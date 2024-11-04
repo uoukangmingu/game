@@ -1,10 +1,17 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
-    --retro-black: #0f380f;
-    --retro-dark-green: #306230;
-    --retro-light-green: #8bac0f;
-    --retro-beige: #9bbc0f;
+    --retro-black: #0a0a0a;
+    --retro-dark-green: #4a0000;
+    --retro-light-green: #8b0000;
+    --retro-beige: #4a4444;
+}
+
+:root {
+    --horror-black: #0a0a0a;
+    --horror-dark-red: #2a0000;
+    --horror-gray: #4a4a4a;
+    --horror-dark: #1c1c1c;
 }
 
 body {
@@ -15,15 +22,9 @@ body {
     height: 100vh;
     margin: 0;
     font-family: 'Press Start 2P', cursive;
-    background-color: black;
-    background: repeating-linear-gradient(
-        45deg,
-        var(--retro-dark-green),
-        var(--retro-dark-green) 10px,
-        var(--retro-black) 10px,
-        var(--retro-black) 20px
-    );
-    filter: contrast(1.2) brightness(1.1) sepia(0.3); /* 컬러 왜곡 */
+    background-color: var(--horror-black);
+    background: radial-gradient(circle, var(--horror-dark-red) 20%, var(--horror-black) 100%);
+    filter: contrast(1.3) brightness(0.8) sepia(0.4);
     position: relative;
     overflow: hidden;
 }
@@ -36,13 +37,8 @@ body::before {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    background: repeating-linear-gradient(
-        rgba(255, 255, 255, 0.05) 0,
-        rgba(255, 255, 255, 0.05) 2px,
-        transparent 2px,
-        transparent 4px
-    ), url('https://www.transparenttextures.com/patterns/noisy.png');
-    opacity: 0.5;
+    background: url('https://www.transparenttextures.com/patterns/noisy.png'), radial-gradient(circle, rgba(255, 0, 0, 0.1) 20%, transparent 100%);
+    opacity: 0.1;
     z-index: 10;
     mix-blend-mode: multiply;
 }
@@ -209,6 +205,12 @@ body {
     border-radius: 10px;
     color: var(--retro-beige);
     border: 5px solid var(--retro-light-green);
+    animation: blood-fade 1s infinite alternate;
+}
+
+@keyframes blood-fade {
+    0% { background-color: rgba(255, 0, 0, 0.2); }
+    100% { background-color: rgba(255, 0, 0, 0.8); }
 }
 
 #game-over button {
@@ -536,76 +538,7 @@ body {
     position: relative;
 }
 
-#register-score-button, #close-leaderboard {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 18px;
-    padding: 15px 30px;
-    margin: 10px;
-    background-color: var(--retro-light-green);
-    color: var(--retro-black);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 5px 0 var(--retro-dark-green);
-}
 
-#leaderboard {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--retro-beige);
-    padding: 20px;
-    border: 5px solid var(--retro-dark-green);
-    border-radius: 10px;
-    z-index: 1000;
-}
-
-#score-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-#score-list li {
-    margin: 10px 0;
-    font-size: 16px;
-}
-
-#main-leaderboard {
-    width: 100%;
-    text-align: center;
-    max-width: 300px;
-    margin-top: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 15px;
-    border-radius: 10px;
-    color: #fff;
-    font-family: 'Press Start 2P', cursive;
-}
-
-#main-leaderboard h3 {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-#main-score-list {
-    padding-left: 0;
-    list-style-position: inside;
-    margin: 0;
-}
-
-#main-score-list li {
-    text-align: centred;
-    padding-left: 20px;
-    position: relative;
-    margin-bottom: 5px;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 
 #difficulty-buttons {
     display: flex;
@@ -1099,12 +1032,75 @@ body.hacking-mode {
     z-index: 9999; /* 다른 요소 위에 표시 */
 }
 
-/* 디졸브 효과를 위한 페이드 아웃 애니메이션 */
-.fade-out {
-    animation: fadeOut 1s forwards;
-}
-
 @keyframes fadeOut {
     from { opacity: 1; }
     to { opacity: 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+#day-start-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1000;
+    cursor: none;
+}
+
+#day-start-text {
+    font-size: 8em;
+    color: #00ff00;
+    animation: fadeIn 1s ease-in-out;
+    font-family: 'BM Hanna', 'Courier New', Courier, monospace;
+    cursor: none;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+@keyframes glitch {
+    0% {
+        clip: rect(44px, 9999px, 56px, 0);
+    }
+    10% {
+        clip: rect(10px, 9999px, 80px, 0);
+        transform: translate(-2px, -2px);
+    }
+    20% {
+        clip: rect(20px, 9999px, 70px, 0);
+        transform: translate(2px, 2px);
+    }
+    30% {
+        clip: rect(30px, 9999px, 40px, 0);
+        transform: translate(-1px, -1px);
+    }
+    100% {
+        clip: rect(44px, 9999px, 56px, 0);
+        transform: translate(0, 0);
+    }
+}
+
+.glitch {
+    animation: glitch 0.3s steps(5) infinite;
 }
