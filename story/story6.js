@@ -1,9 +1,9 @@
 ﻿const texts = [
-    "06월 03일 저녁 6시",
-    "비가 조금 더 차가워졌다... 어제의 빗소리가 들리지 않는다...",
-    "분명 어제도 게임을 했던 것 같은데, 기억이 또렷하지 않다...",
-    "게임 속에서 보았던 이상한 색감이... 현실로 스며든다.",
-    "...기억 저편에서 나는 이 USB를 주웠던 기억이 없었다."
+    "06월 06일 저녁 6시",
+    "비는 멈췄다. 그러나 방 안에는 물소리가 넘쳐 흐른다...",
+    "거울 속 내 모습이 날 노려본다. 내가 아닌 내가 말을 걸어온다.",
+    "벽에는 '1,000점을 달성하라'는 글자가 피처럼 번지고 있다.",
+    "모니터가 꺼졌는데도, 화면 속 게임이 내 눈앞에 계속 재생된다..."
 ];
 
 let currentTextIndex = 0;
@@ -127,7 +127,7 @@ function showNextText() {
     typingSound.pause();
     typingSound.currentTime = 0;
 
-    if (texts[currentTextIndex] === "...기억 저편에서 나는 이 USB를 주웠던 기억이 없었다.") {
+    if (texts[currentTextIndex] === "모니터가 꺼졌는데도, 화면 속 게임이 내 눈앞에 계속 재생된다...") {
         fadeOutAudio(bgm, 2000); // 기존 배경음악 페이드 아웃
         fadeOutText(textElement, 2000); // 텍스트 페이드 아웃
 
@@ -187,7 +187,7 @@ function handleScreenToggle() {
 // YES 버튼 클릭 시 DAY1.html 게임 페이지로 이동
 document.getElementById("yes-button").addEventListener("click", () => {
     // DAY1.html로 이동하면서 기존 히스토리를 제거하고, 히스토리 스택을 초기화
-    window.location.replace("storymode/DAY3.html");
+    window.location.replace("storymode/DAY4.html");
 });
 
 // 모니터 클릭 시 이벤트
@@ -205,73 +205,25 @@ window.addEventListener("load", () => {
     });
 });
 
-const noButton = document.getElementById("no-button");
+// NO 버튼이 텔레포트할 수 있는 영역 설정
 const crtScreen = document.getElementById("crt-screen");
+const noButton = document.getElementById("no-button");
 
-// 버튼의 초기 위치와 이동 방향 설정
-let noButtonX = 50; // 초기 x 위치 (% 기준)
-let noButtonY = 50; // 초기 y 위치 (% 기준)
-let directionX = 1; // x 방향 이동 (-1: 왼쪽, 1: 오른쪽)
-let directionY = 1; // y 방향 이동 (-1: 위, 1: 아래)
-let mouseX = 0;
-let mouseY = 0;
-
-// 마우스 위치 추적
-document.addEventListener("mousemove", (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
+// NO 버튼 클릭 시 텔레포트 기능
+noButton.addEventListener("click", () => {
+    teleportNoButton();
 });
 
-// 버튼의 위치와 방향 업데이트
-function updateNoButtonPosition() {
+function teleportNoButton() {
+    // CRT 화면의 크기 계산
     const crtRect = crtScreen.getBoundingClientRect();
-    const buttonWidth = noButton.offsetWidth;
-    const buttonHeight = noButton.offsetHeight;
 
-    // CRT 화면의 최대 이동 경계 계산
-    const maxX = crtRect.width - buttonWidth;
-    const maxY = crtRect.height - buttonHeight;
+    // 텔레포트할 새로운 위치 계산 (CRT 화면 내 랜덤 위치)
+    const newX = Math.random() * (crtRect.width - noButton.offsetWidth);
+    const newY = Math.random() * (crtRect.height - noButton.offsetHeight);
 
-    // CRT 화면 내부에서 버튼 이동
-    noButtonX += directionX * 0.3; // 버튼 이동 속도
-    noButtonY += directionY * 0.3;
-
-    // 버튼이 화면 경계를 벗어나지 않도록 제한
-    if (noButtonX <= 0 || noButtonX >= (maxX / crtRect.width) * 100) {
-        directionX *= -1; // x 방향 반전
-    }
-    if (noButtonY <= 0 || noButtonY >= (maxY / crtRect.height) * 100) {
-        directionY *= -1; // y 방향 반전
-    }
-
-    // 마우스와 버튼의 거리 계산
-    const buttonRect = noButton.getBoundingClientRect();
-    const distanceX = mouseX - (buttonRect.left + buttonWidth / 2);
-    const distanceY = mouseY - (buttonRect.top + buttonHeight / 2);
-    const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-
-    // 마우스가 일정 거리(100px) 이내로 접근하면 버튼이 반대 방향으로 이동
-    const hoverThreshold = 100;
-    if (distance < hoverThreshold) {
-        directionX = distanceX > 0 ? -1 : 1; // x 방향 설정
-        directionY = distanceY > 0 ? -1 : 1; // y 방향 설정
-    }
-
-    // 버튼의 위치를 % 단위로 업데이트
-    noButton.style.left = `${noButtonX}%`;
-    noButton.style.top = `${noButtonY}%`;
-
-    // 다음 프레임 호출
-    requestAnimationFrame(updateNoButtonPosition);
-}
-
-// 버튼 초기 위치 설정 및 애니메이션 시작
-window.addEventListener("DOMContentLoaded", () => {
+    // NO 버튼 위치 설정 (CRT 화면 내 상대 위치로 이동)
     noButton.style.position = "absolute";
-    noButton.style.left = `${noButtonX}%`;
-    noButton.style.top = `${noButtonY}%`;
-
-    // 애니메이션 시작
-    requestAnimationFrame(updateNoButtonPosition);
-});
-
+    noButton.style.left = `${newX}px`;
+    noButton.style.top = `${newY}px`;
+}

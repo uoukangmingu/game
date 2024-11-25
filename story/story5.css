@@ -233,20 +233,32 @@ body.hide-cursor {
 }
 
 #no-button {
-    position: absolute;
-    z-index: 1000;
-    padding: 5px 20px;
-    font-size: 0.8em;
+    padding: 3px 15px; /* Much smaller padding */
+    font-size: 0.7em; /* Smaller font size */
     color: #00ff00;
     background-color: #111;
-    border: 1px solid #00ff00;
+    border: 1px solid #00ff00; /* Thinner border for a smaller appearance */
+    cursor: pointer;
+    transition: background-color 0.2s;
     text-align: center;
-    border-radius: 5px;
-    pointer-events: auto; /* 마우스 이벤트 활성화 */
-    transition: transform 0.2s;
+    position: absolute;
+    z-index: 1000;
 }
 
-#no-button:hover {
-    transform: scale(1.1); /* 호버 효과 */
+.yes-button {
+    font-size: 1.2em;
+    color: #00ff00;
+    background-color: #111;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s, background-color 0.2s;
+    text-align: center;
+}
+
+.yes-button:hover {
+    transform: scale(1.2); /* 버튼 호버 시 확대 */
+    background-color: #222;
 }
 

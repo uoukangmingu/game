@@ -1,12 +1,13 @@
 ﻿const texts = [
-"06월 04일 저녁 6시",
-"여전히 비가 내리고 있지만, 오늘은 유난히 고요하다...",
-"회사에서 보낸 하루는 어제보다 더 흐릿해진다...",
-"어쩐지 집에 돌아오는 길이 낯설고, 조금씩 길을 잃는 기분이다...",
-"이상하게도... USB를 주운 기억이 전혀 떠오르지 않는다..."
+    "06월 04일 저녁 6시",
+    "여전히 비가 내리고 있지만, 오늘은 유난히 고요하다...",
+    "회사에서 보낸 하루는 어제보다 더 흐릿해진다...",
+    "어쩐지 집에 돌아오는 길이 낯설고, 조금씩 길을 잃는 기분이다...",
+    "이상하게도... USB를 주운 기억이 전혀 떠오르지 않는다..."
 ];
 
 let currentTextIndex = 0;
+let isStarEffectActive = false; // 별빛 효과 활성화 여부
 const day2Text = document.getElementById("day-start-text");
 const day2Screen = document.getElementById("day-start-screen");
 const textElement = document.getElementById("text");
@@ -89,7 +90,8 @@ function playIntroWithBgm() {
 function typeText(text) {
     textElement.textContent = "";
     textElement.classList.remove("typing");
-    textElement.style.opacity = 1; // 텍스트 초기화
+    textElement.style.opacity = 1;
+    document.body.classList.add("hide-cursor"); // Hide cursor during typing
     void textElement.offsetWidth;
     textElement.classList.add("typing");
     textElement.textContent = text;
@@ -101,6 +103,7 @@ function typeText(text) {
     typingSound.play();
 }
 
+// Add event listener to remove cursor-hiding class after typing animation
 textElement.addEventListener("animationend", () => {
     fadeOutAudio(typingSound, 500);
 });
@@ -121,7 +124,6 @@ function showCrtMonitor() {
 function showNextText() {
     if (isStarEffectActive) return;
 
-    // 현재 재생 중인 타이핑 사운드 중지 및 초기화
     typingSound.pause();
     typingSound.currentTime = 0;
 
@@ -133,12 +135,10 @@ function showNextText() {
             showCrtMonitor(); // 2초 후 CRT 모니터 표시 및 새로운 배경음악 페이드 인
         }, 2000);
     } else {
-        // 다음 텍스트로 이동
         currentTextIndex = (currentTextIndex + 1) % texts.length;
         typeText(texts[currentTextIndex]);
     }
 }
-
 
 
 // 클릭 및 키보드 입력 이벤트 추가
@@ -205,25 +205,19 @@ window.addEventListener("load", () => {
     });
 });
 
-// NO 버튼이 텔레포트할 수 있는 영역 설정
-const crtScreen = document.getElementById("crt-screen");
-const noButton = document.getElementById("no-button");
-
-// NO 버튼 클릭 시 텔레포트 기능
-noButton.addEventListener("click", () => {
-    teleportNoButton();
-});
-
-function teleportNoButton() {
-    // CRT 화면의 크기 계산
-    const crtRect = crtScreen.getBoundingClientRect();
-
-    // 텔레포트할 새로운 위치 계산 (CRT 화면 내 랜덤 위치)
-    const newX = Math.random() * (crtRect.width - noButton.offsetWidth);
-    const newY = Math.random() * (crtRect.height - noButton.offsetHeight);
-
-    // NO 버튼 위치 설정 (CRT 화면 내 상대 위치로 이동)
-    noButton.style.position = "absolute";
-    noButton.style.left = `${newX}px`;
-    noButton.style.top = `${newY}px`;
+function startScreenBlink() {
+    const crtScreen = document.getElementById("crt-screen");
+    crtScreen.classList.add("screen-blink"); // 깜빡임 효과 추가
 }
+
+// YES 버튼 표시 시 화면 깜빡임 시작
+function showPrompt() {
+    const crtScreen = document.getElementById("crt-screen");
+    const promptContainer = document.getElementById("prompt-container");
+    crtScreen.style.backgroundColor = "#000"; // CRT 화면을 검은색으로 전환
+    promptContainer.style.display = "flex"; // 질문 텍스트와 버튼 표시
+    document.body.classList.remove("hide-cursor"); // 마우스 커서 다시 표시
+
+    startScreenBlink(); // 깜빡임 시작
+}
+

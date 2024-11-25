@@ -1,9 +1,9 @@
 ﻿const texts = [
-    "06월 03일 저녁 6시",
-    "비가 조금 더 차가워졌다... 어제의 빗소리가 들리지 않는다...",
-    "분명 어제도 게임을 했던 것 같은데, 기억이 또렷하지 않다...",
-    "게임 속에서 보았던 이상한 색감이... 현실로 스며든다.",
-    "...기억 저편에서 나는 이 USB를 주웠던 기억이 없었다."
+    "06월 05일 저녁 6시",
+    "비는 멈춘 것 같지만, 머릿속에서 빗소리가 끊이질 않는다...",
+    "익숙한 방이 낯설게 느껴지고, 내 손엔 언제나 USB가 쥐어져 있다.",
+    "창밖의 세상이 뒤틀리고, 문득 누군가 내 이름을 부르는 소리가 들린다.",
+    "내 이름이 희미해질 때쯤, 화면은 이미 켜져 있다..."
 ];
 
 let currentTextIndex = 0;
@@ -127,7 +127,7 @@ function showNextText() {
     typingSound.pause();
     typingSound.currentTime = 0;
 
-    if (texts[currentTextIndex] === "...기억 저편에서 나는 이 USB를 주웠던 기억이 없었다.") {
+    if (texts[currentTextIndex] === "내 이름이 희미해질 때쯤, 화면은 이미 켜져 있다...") {
         fadeOutAudio(bgm, 2000); // 기존 배경음악 페이드 아웃
         fadeOutText(textElement, 2000); // 텍스트 페이드 아웃
 
@@ -187,7 +187,7 @@ function handleScreenToggle() {
 // YES 버튼 클릭 시 DAY1.html 게임 페이지로 이동
 document.getElementById("yes-button").addEventListener("click", () => {
     // DAY1.html로 이동하면서 기존 히스토리를 제거하고, 히스토리 스택을 초기화
-    window.location.replace("storymode/DAY3.html");
+    window.location.replace("storymode/DAY5.html");
 });
 
 // 모니터 클릭 시 이벤트
@@ -205,73 +205,78 @@ window.addEventListener("load", () => {
     });
 });
 
-const noButton = document.getElementById("no-button");
-const crtScreen = document.getElementById("crt-screen");
-
-// 버튼의 초기 위치와 이동 방향 설정
-let noButtonX = 50; // 초기 x 위치 (% 기준)
-let noButtonY = 50; // 초기 y 위치 (% 기준)
-let directionX = 1; // x 방향 이동 (-1: 왼쪽, 1: 오른쪽)
-let directionY = 1; // y 방향 이동 (-1: 위, 1: 아래)
-let mouseX = 0;
-let mouseY = 0;
-
-// 마우스 위치 추적
-document.addEventListener("mousemove", (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-});
-
-// 버튼의 위치와 방향 업데이트
-function updateNoButtonPosition() {
-    const crtRect = crtScreen.getBoundingClientRect();
-    const buttonWidth = noButton.offsetWidth;
-    const buttonHeight = noButton.offsetHeight;
-
-    // CRT 화면의 최대 이동 경계 계산
-    const maxX = crtRect.width - buttonWidth;
-    const maxY = crtRect.height - buttonHeight;
-
-    // CRT 화면 내부에서 버튼 이동
-    noButtonX += directionX * 0.3; // 버튼 이동 속도
-    noButtonY += directionY * 0.3;
-
-    // 버튼이 화면 경계를 벗어나지 않도록 제한
-    if (noButtonX <= 0 || noButtonX >= (maxX / crtRect.width) * 100) {
-        directionX *= -1; // x 방향 반전
-    }
-    if (noButtonY <= 0 || noButtonY >= (maxY / crtRect.height) * 100) {
-        directionY *= -1; // y 방향 반전
-    }
-
-    // 마우스와 버튼의 거리 계산
-    const buttonRect = noButton.getBoundingClientRect();
-    const distanceX = mouseX - (buttonRect.left + buttonWidth / 2);
-    const distanceY = mouseY - (buttonRect.top + buttonHeight / 2);
-    const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-
-    // 마우스가 일정 거리(100px) 이내로 접근하면 버튼이 반대 방향으로 이동
-    const hoverThreshold = 100;
-    if (distance < hoverThreshold) {
-        directionX = distanceX > 0 ? -1 : 1; // x 방향 설정
-        directionY = distanceY > 0 ? -1 : 1; // y 방향 설정
-    }
-
-    // 버튼의 위치를 % 단위로 업데이트
-    noButton.style.left = `${noButtonX}%`;
-    noButton.style.top = `${noButtonY}%`;
-
-    // 다음 프레임 호출
-    requestAnimationFrame(updateNoButtonPosition);
+function startScreenBlink() {
+    const crtScreen = document.getElementById("crt-screen");
+    crtScreen.classList.add("screen-blink"); // 깜빡임 효과 추가
 }
 
-// 버튼 초기 위치 설정 및 애니메이션 시작
-window.addEventListener("DOMContentLoaded", () => {
-    noButton.style.position = "absolute";
-    noButton.style.left = `${noButtonX}%`;
-    noButton.style.top = `${noButtonY}%`;
+// YES 버튼 표시 시 화면 깜빡임 시작
+function showPrompt() {
+    const crtScreen = document.getElementById("crt-screen");
+    const promptContainer = document.getElementById("prompt-container");
+    crtScreen.style.backgroundColor = "#000"; // CRT 화면을 검은색으로 전환
+    promptContainer.style.display = "flex"; // 질문 텍스트와 버튼 표시
+    document.body.classList.remove("hide-cursor"); // 마우스 커서 다시 표시
 
-    // 애니메이션 시작
-    requestAnimationFrame(updateNoButtonPosition);
-});
+    startScreenBlink(); // 깜빡임 시작
+}
+function populateYesButtons() {
+    const crtScreen = document.getElementById("crt-screen");
+    const buttonContainer = document.getElementById("button-container");
 
+    if (!crtScreen || !buttonContainer) {
+        console.error("crt-screen 또는 button-container를 찾을 수 없습니다.");
+        return;
+    }
+
+    const buttonCount = 50; // 생성할 버튼 개수
+    const crtRect = crtScreen.getBoundingClientRect();
+    const buttonMargin = 50; // 버튼 간 최소 간격
+
+    const positions = []; // 버튼 위치를 저장하여 중복 방지
+
+    for (let i = 0; i < buttonCount; i++) {
+        const button = document.createElement("button");
+        button.textContent = "YES";
+        button.className = "yes-button";
+
+        // 버튼 크기 랜덤 설정
+        const buttonWidth = Math.random() * 80 + 40; // 40px ~ 120px
+        const buttonHeight = Math.random() * 40 + 20; // 20px ~ 60px
+        button.style.width = `${buttonWidth}px`;
+        button.style.height = `${buttonHeight}px`;
+
+        let x, y, isOverlapping;
+
+        // 위치가 다른 버튼과 겹치지 않도록 설정
+        do {
+            x = Math.random() * (crtRect.width - buttonWidth);
+            y = Math.random() * (crtRect.height - buttonHeight);
+            isOverlapping = positions.some(pos => {
+                return (
+                    Math.abs(pos.x - x) < buttonWidth + buttonMargin &&
+                    Math.abs(pos.y - y) < buttonHeight + buttonMargin
+                );
+            });
+        } while (isOverlapping);
+
+        // 위치 저장
+        positions.push({ x, y });
+
+        // 버튼 위치 설정
+        button.style.position = "absolute";
+        button.style.left = `${x}px`;
+        button.style.top = `${y}px`;
+
+        // 버튼 클릭 이벤트
+        button.addEventListener("click", () => {
+            alert("게임 시작!");
+            // 원하는 행동 추가
+        });
+
+        buttonContainer.appendChild(button);
+    }
+}
+
+// YES 버튼 생성 함수 호출
+window.addEventListener("DOMContentLoaded", populateYesButtons);
