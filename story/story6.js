@@ -187,7 +187,7 @@ function handleScreenToggle() {
 // YES 버튼 클릭 시 DAY1.html 게임 페이지로 이동
 document.getElementById("yes-button").addEventListener("click", () => {
     // DAY1.html로 이동하면서 기존 히스토리를 제거하고, 히스토리 스택을 초기화
-    window.location.replace("storymode/DAY4.html");
+    window.location.replace("storymode/DAY6.html");
 });
 
 // 모니터 클릭 시 이벤트
@@ -204,26 +204,3 @@ window.addEventListener("load", () => {
         history.pushState(null, null, window.location.href); // 히스토리 이동 시 다시 현재 페이지로 고정
     });
 });
-
-// NO 버튼이 텔레포트할 수 있는 영역 설정
-const crtScreen = document.getElementById("crt-screen");
-const noButton = document.getElementById("no-button");
-
-// NO 버튼 클릭 시 텔레포트 기능
-noButton.addEventListener("click", () => {
-    teleportNoButton();
-});
-
-function teleportNoButton() {
-    // CRT 화면의 크기 계산
-    const crtRect = crtScreen.getBoundingClientRect();
-
-    // 텔레포트할 새로운 위치 계산 (CRT 화면 내 랜덤 위치)
-    const newX = Math.random() * (crtRect.width - noButton.offsetWidth);
-    const newY = Math.random() * (crtRect.height - noButton.offsetHeight);
-
-    // NO 버튼 위치 설정 (CRT 화면 내 상대 위치로 이동)
-    noButton.style.position = "absolute";
-    noButton.style.left = `${newX}px`;
-    noButton.style.top = `${newY}px`;
-}

@@ -1411,7 +1411,7 @@ function gameCleared() {
         
         // 화면 또는 키 입력 대기 후 story2.html로 이동
         const goToNext = () => {
-            window.location.replace('../story6.html');  // 히스토리를 삭제하고 이동
+            window.location.replace('../../index.html');  // 히스토리를 삭제하고 이동
         };
 
         // 클릭 또는 키다운 이벤트 리스너 추가

@@ -1446,3 +1446,33 @@ document.getElementById('story-mode-btn').addEventListener('click', function() {
     }, 1000); // 애니메이션 시간과 맞춰 1초(1000ms) 후 이동
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const storyModeBtn = document.getElementById('story-mode-btn');
+    let pressCount = 0;
+    let firstPressTime = null;
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === '6') {
+            const currentTime = new Date().getTime();
+
+            // 첫 번째 키 입력 시 타이머 시작
+            if (!firstPressTime) {
+                firstPressTime = currentTime;
+            }
+
+            // 1초 안에 세 번 눌렀는지 확인
+            if (currentTime - firstPressTime <= 1000) {
+                pressCount++;
+                if (pressCount === 3) {
+                    storyModeBtn.style.display = 'block'; // 버튼 표시
+                    pressCount = 0; // 카운트 초기화
+                    firstPressTime = null;
+                }
+            } else {
+                // 1초 초과 시 초기화
+                pressCount = 1;
+                firstPressTime = currentTime;
+            }
+        }
+    });
+});
