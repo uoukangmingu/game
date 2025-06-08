@@ -407,23 +407,24 @@ body {
 
 .retro-button {
     font-family: 'Press Start 2P', cursive;
-    font-size: 32px;
-    color: #000000;
-    background: linear-gradient(to bottom, #ff6b6b, #ee5253);
-    border: none;
-    border-radius: 15px;
-    width: 250px;
-    height: 100px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 30px;
+    font-size: 20px;
+    padding: 16px 38px;
+    margin: 10px 0; /* 위아래 간격 */
+    border: 4px solid var(--retro-dark-green);
+    border-radius: 12px;
+    background: var(--retro-beige);
+    color: var(--retro-black);
+    box-shadow: 0 5px 0 var(--retro-dark-green);
     cursor: pointer;
-    box-shadow: 0 8px 0 #c0392b, 0 15px 20px rgba(0,0,0,.35);
-    text-shadow: 2px 2px #000000;
-    transition: all 0.1s ease-in-out;
-    position: relative;
-    padding: 0;
+    transition: 0.18s;
+    display: block;        /* 세로정렬을 위한 블록 요소 */
+    width: 270px;          /* 버튼 크기 고정(원하는 크기로 수정 가능) */
+    text-align: center;    /* 텍스트 중앙 정렬 */
+}
+
+.retro-button:hover {
+    background: var(--retro-dark-green);
+    color: var(--retro-light-green);
 }
 
 .retro-button span {
@@ -435,10 +436,7 @@ body {
     background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 100%);
 }
 
-.retro-button:hover {
-    box-shadow: 0 6px 0 #c0392b, 0 12px 15px rgba(0,0,0,.35);
-    transform: translateY(2px);
-}
+
 
 .retro-button:active {
     box-shadow: 0 2px 0 #c0392b, 0 5px 10px rgba(0,0,0,.35);
@@ -1026,5 +1024,65 @@ body.hacking-mode {
 }
 #close-leaderboard:hover {
     cursor: url('img/mousehover.png'), pointer;
+}
+
+#challenge-button {
+    margin-top: 12px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    background: var(--retro-light-green);
+    color: var(--retro-black);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 34px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--retro-dark-green);
+    transition: 0.15s;
+}
+#challenge-button:hover {
+    background: var(--retro-dark-green);
+    color: var(--retro-light-green);
+}
+
+#tutorial-button.retro-button {
+    font-size: 14px;
+    padding: 9px 18px;
+    width: 170px;
+    margin: 5px 0 18px 0;  /* 위쪽은 조금, 아래쪽은 좀 더 */
+    border-width: 3px;
+}
+#play-button.retro-button {
+    background: #d3212f;
+    color: #fff;
+    border: 4px solid #800f1a;
+    box-shadow: 0 5px 0 #800f1a;
+}
+#play-button.retro-button:hover {
+    background: #800f1a;
+    color: #ffb3b3;
+}
+#challenge-button.retro-button {
+    background: #3377d6;
+    color: #fff;
+    border: 4px solid #1a355c;
+    box-shadow: 0 5px 0 #1a355c;
+}
+#challenge-button.retro-button:hover {
+    background: #1a355c;
+    color: #b3e6ff;
+}
+#tutorial-button.retro-button {
+    background: #f49b1e;
+    color: #fff;
+    border: 4px solid #bc6c06;
+    box-shadow: 0 5px 0 #bc6c06;
+    font-size: 14px;
+    padding: 9px 18px;
+    width: 170px;
+    margin: 5px 0 18px 0;
+}
+#tutorial-button.retro-button:hover {
+    background: #bc6c06;
+    color: #ffe4b3;
 }
 

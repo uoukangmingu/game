@@ -19,6 +19,7 @@ const hackingGoal = 30;
 let currentVolume = 1;
 let scores = JSON.parse(localStorage.getItem('scores')) || [];
 let recentModes = [];
+let mainMenuSource = 'main';
 const RECENT_MODES_TO_REMEMBER = 3;
 let difficultyScores = {
     '6000': 10,
@@ -180,24 +181,70 @@ function resetGame() {
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('main-screen').style.display = 'flex';
         document.getElementById('register-score-button').style.display = 'block';
+
+        // ==== 진입 경로에 따라 메인 메뉴 버튼 show/hide 관리 ====
+        if (mainMenuSource === 'main') {
+            // 메인 진입: 모든 버튼(챌린지/연습/튜토리얼) 보임
+            document.getElementById('challenge-button').style.display = 'block';
+            document.getElementById('play-button').style.display = 'block';
+            document.getElementById('tutorial-button').style.display = 'block';
+        } else if (mainMenuSource === 'practice') {
+            // 연습모드에서 돌아옴: 챌린지 버튼 숨김
+            document.getElementById('challenge-button').style.display = 'none';
+            document.getElementById('play-button').style.display = 'block';
+            document.getElementById('tutorial-button').style.display = 'block';
+        } else if (mainMenuSource === 'challenge') {
+            // 챌린지에서 돌아옴: 챌린지만 보이게 (원하면 수정 가능)
+            document.getElementById('challenge-button').style.display = 'block';
+            document.getElementById('play-button').style.display = 'block';
+            document.getElementById('tutorial-button').style.display = 'block';
+        }
+
+        // 난이도 버튼은 항상 숨김
+        document.getElementById('difficulty-buttons').style.display = 'none';
+
+        // ----- 아래는 기존 화면 재구성 코드 (리더보드/메인 배치 등) -----
         const mainScreen = document.getElementById('main-screen');
         mainScreen.style.flexDirection = 'column';
         mainScreen.style.justifyContent = 'center';
         mainScreen.style.alignItems = 'center';
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.id = 'difficulty-buttons-container';
-        const leaderboardContainer = document.createElement('div');
-        leaderboardContainer.id = 'main-leaderboard-container';
-        buttonsContainer.appendChild(document.getElementById('difficulty-buttons'));
-        leaderboardContainer.appendChild(document.getElementById('main-leaderboard'));
-        mainScreen.appendChild(buttonsContainer);
-        mainScreen.appendChild(leaderboardContainer);
+
+        // 필요에 따라 기존 컨테이너 정리 및 재배치
+        let buttonsContainer = document.getElementById('difficulty-buttons-container');
+        let leaderboardContainer = document.getElementById('main-leaderboard-container');
+
+        if (!buttonsContainer) {
+            buttonsContainer = document.createElement('div');
+            buttonsContainer.id = 'difficulty-buttons-container';
+        }
+        if (!leaderboardContainer) {
+            leaderboardContainer = document.createElement('div');
+            leaderboardContainer.id = 'main-leaderboard-container';
+        }
+        if (!buttonsContainer.contains(document.getElementById('difficulty-buttons'))) {
+            buttonsContainer.appendChild(document.getElementById('difficulty-buttons'));
+        }
+        if (!leaderboardContainer.contains(document.getElementById('main-leaderboard'))) {
+            leaderboardContainer.appendChild(document.getElementById('main-leaderboard'));
+        }
+        if (!mainScreen.contains(buttonsContainer)) {
+            mainScreen.appendChild(buttonsContainer);
+        }
+        if (!mainScreen.contains(leaderboardContainer)) {
+            mainScreen.appendChild(leaderboardContainer);
+        }
     }, 100);
+
+    // 게임오버 화면 위치 고정
     const gameOverScreen = document.getElementById('game-over');
     gameOverScreen.style.left = '50%';
     gameOverScreen.style.transform = 'translate(-50%, -50%)';
     updateMainLeaderboard();
+
+    // 항상 main으로 초기화하여 다음 진입 때 정상 동작
+    mainMenuSource = 'main';
 }
+
 function gameOver() {
     isGameOver = true;
     lostSound();
@@ -925,13 +972,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // -------------- 로고 애니메이션/기타 UI
 document.getElementById('play-button').addEventListener('click', function() {
+    mainMenuSource = 'practice';
     hoverSound();
     this.style.display = 'none';
+    // challenge 버튼 숨기기
+    document.getElementById('challenge-button').style.display = 'none';
+    document.getElementById('tutorial-button').style.display = 'none';
     const difficultyButtons = document.getElementById('difficulty-buttons');
     difficultyButtons.style.display = 'flex';
     difficultyButtons.style.flexDirection = 'row';
     difficultyButtons.style.justifyContent = 'center';
     difficultyButtons.style.gap = '10px';
+    // 나머지 버튼 애니메이션은 그대로
     const buttons = difficultyButtons.getElementsByTagName('button');
     Array.from(buttons).forEach((button, index) => {
         button.style.opacity = '0';
@@ -943,6 +995,7 @@ document.getElementById('play-button').addEventListener('click', function() {
         }, index * 200);
     });
 });
+
 document.getElementById('play-button').addEventListener('click', startLogoAnimation);
 function startLogoAnimation() {
     const logoAnimation = document.getElementById('logo-animation');
@@ -1053,5 +1106,14 @@ document.addEventListener('keydown', function(event) {
     } else if (gameMode === 'precisionTime') {
         handlePrecisionTimeKeyPress(event);
     }
+});
+
+document.getElementById('challenge-button').addEventListener('click', function() {
+    mainMenuSource = 'challenge';
+    document.getElementById('difficulty-buttons').style.display = 'none';
+    document.getElementById('play-button').style.display = 'none';
+    document.getElementById('tutorial-button').style.display = 'none';
+    document.getElementById('challenge-button').style.display = 'none';
+    alert('챌린지 모드 준비 중!');
 });
 
