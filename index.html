@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="crt-overlay"></div>
-    <div id="vhs-overlay"></div>
     <div id="main-screen">
         <button id="tutorial-button" class="retro-button"><span>Tutorial</span></button>
         <button id="play-button" class="retro-button">PLAY</button>
@@ -19,7 +17,6 @@
             <button class="difficulty-btn" data-time="6000">EASY</button>
             <button class="difficulty-btn" data-time="3000">NORMAL</button>
             <button class="difficulty-btn" data-time="1500">HARD</button>
-            <button id="story-mode-btn" class="difficulty-btn" style="display: none;">STORY MODE</button>
         </div>
 <div id="tutorial-container" style="display: none;">
   <h2>Tutorial</h2>
@@ -55,12 +52,6 @@
         <div id="keys-display"></div>
 <div id="ascend" class="game-mode" style="display: none;">
     <!-- 여기에 점들이 동적으로 추가될 거야 -->
-</div>
-
-<div id="color-match-game" class="game-mode" style="display: none;">
-    <div id="color-prompt"></div> <!-- 제시된 색상 텍스트 표시 -->
-    <div id="presented-color-tile"></div> <!-- 제시된 색상을 시각적으로 표시할 타일 -->
-    <div id="color-match-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"></div>
 </div>
 
         <div id="directions-display"></div>
@@ -107,28 +98,28 @@
         <div id="score">Score: <span id="score-value">0</span></div>
     </div>
 <audio id="clear-sound">
-    <source src="sounds/1.mp3" type="audio/mpeg">
+    <source src="sounds/MP_띠링! 이목 집중시키는 소리.mp3" type="audio/mpeg">
 </audio>
 <audio id="hover-sound">
-    <source src="sounds/2.mp3" type="audio/mpeg">
+    <source src="sounds/MP_게임 효과음 5 (뽀잉 점프).mp3" type="audio/mpeg">
 </audio>
 <audio id="countdown-sound">
-    <source src="sounds/3.mp3" type="audio/mpeg">
+    <source src="sounds/MP_사보타지 효과음.mp3" type="audio/mpeg">
 </audio>
 <audio id="lost-sound">
-    <source src="sounds/4.mp3" type="audio/mpeg">
+    <source src="sounds/MP_나쁜 이벤트(뿌뿌뿌뿌뿌).mp3" type="audio/mpeg">
 </audio>
 
 <audio id="easy-music" loop>
-    <source src="sounds/5.mp3" type="audio/mpeg">
+    <source src="sounds/MP_8bit 게임 세상.mp3" type="audio/mpeg">
 </audio>
 <audio id="normal-music" loop>
-    <source src="sounds/6.mp3" type="audio/mpeg">
+    <source src="sounds/MP_오락실과 나.mp3" type="audio/mpeg">
 </audio>
 <audio id="hard-music" loop>
-    <source src="sounds/7.mp3" type="audio/mpeg">
+    <source src="sounds/MP_보너스 타임.mp3" type="audio/mpeg">
 </audio>
-<audio id="buttonSound" src="sounds/8.mp3">
+<audio id="buttonSound" src="sounds/MP_스페이스바 터치음2(딸깍).mp3">
 </audio>
 
 
@@ -138,6 +129,17 @@
     <button id="restart-button">Restart</button>
     <button id="main-menu-button">Main Menu</button>
     <button id="register-score-button">Score Record</button>
+</div>
+<!-- 점수 등록 모달 (디자인 완벽 적용) -->
+<div id="name-modal" style="display:none;">
+  <div id="name-modal-box">
+    <h3>점수 등록</h3>
+    <input id="player-name-input" type="text" maxlength="8" placeholder="이름 (최대 8자)">
+    <div style="display:flex; gap:12px;">
+      <button id="player-name-save-btn">저장</button>
+      <button id="player-name-cancel-btn">취소</button>
+    </div>
+  </div>
 </div>
 
 <!-- 점수판 추가 -->

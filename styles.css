@@ -15,7 +15,6 @@ body {
     height: 100vh;
     margin: 0;
     font-family: 'Press Start 2P', cursive;
-    background-color: black;
     background: repeating-linear-gradient(
         45deg,
         var(--retro-dark-green),
@@ -23,47 +22,7 @@ body {
         var(--retro-black) 10px,
         var(--retro-black) 20px
     );
-    filter: contrast(1.2) brightness(1.1) sepia(0.3); /* 컬러 왜곡 */
-    position: relative;
-    overflow: hidden;
 }
-
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-        rgba(255, 255, 255, 0.05) 0,
-        rgba(255, 255, 255, 0.05) 2px,
-        transparent 2px,
-        transparent 4px
-    ), url('https://www.transparenttextures.com/patterns/noisy.png');
-    opacity: 0.5;
-    z-index: 10;
-    mix-blend-mode: multiply;
-}
-
-body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.5) 100%);
-    z-index: 9;
-}
-
-body {
-    filter: contrast(1.2) brightness(0.8) sepia(0.3);
-    background-color: black;
-}
-
 .retro-button {
     cursor: url('img/mouse1.png'), auto;
 }
@@ -73,30 +32,20 @@ body {
 }
 
 #game-container {
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
+    overflow: hidden; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     width: 90vw;
     max-width: 600px;
     aspect-ratio: 3 / 4;
     background-color: var(--retro-beige);
     border: 10px solid var(--retro-dark-green);
     border-radius: 10px;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
-    image-rendering: pixelated; /* 픽셀화 효과 */
-}
-
-#game-container {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    filter: contrast(1.1) brightness(0.85) saturate(0.8);
 }
 
 #keys-display, #directions-display {
@@ -466,11 +415,15 @@ body {
     width: 250px;
     height: 100px;
     text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 30px;
     cursor: pointer;
     box-shadow: 0 8px 0 #c0392b, 0 15px 20px rgba(0,0,0,.35);
     text-shadow: 2px 2px #000000;
     transition: all 0.1s ease-in-out;
-    margin: 30px;
+    position: relative;
+    padding: 0;
 }
 
 .retro-button span {
@@ -1012,99 +965,66 @@ body.hacking-mode {
     box-shadow: 1px 1px 0 var(--retro-black);
 }
 
-#color-match-game {
+#name-modal {
+    position: fixed;
+    z-index: 3000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(20, 20, 20, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#name-modal-box {
+    background: var(--retro-beige);
+    border: 6px solid var(--retro-dark-green);
+    border-radius: 16px;
+    padding: 30px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    background-color: var(--retro-dark-green);
-    border: 3px solid var(--retro-black);
-    border-radius: 10px;
+    box-shadow: 0 8px 30px #000a;
 }
-
-#color-prompt {
+#name-modal-box h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--retro-black);
+    margin-bottom: 16px;
     font-size: 24px;
-    font-weight: bold;
-    color: var(--retro-beige);
-    margin-bottom: 10px;
+}
+#player-name-input {
+    width: 200px;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid var(--retro-dark-green);
+    margin: 12px 0;
+    background: #fff;
     text-align: center;
+    outline: none;
 }
-
-#presented-color-tile {
-    width: 100px;
-    height: 100px;
-    margin: 20px auto;
-    background-color: transparent;
-    border: 2px solid var(--retro-black);
-    border-radius: 10px;
-    font-size: 0; /* 폰트 크기를 0으로 설정하여 텍스트 숨기기 */
+#name-modal-box button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    background: var(--retro-light-green);
+    color: var(--retro-black);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 22px;
+    margin: 5px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--retro-dark-green);
+    transition: 0.15s;
 }
-
-
-#color-match-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    width: 100%;
+#name-modal-box button:hover {
+    background: var(--retro-dark-green);
+    color: var(--retro-light-green);
+    cursor: url('img/mousehover.png'), pointer;
 }
-
-.color-tile {
-    width: 70px;
-    height: 70px;
-    border-radius: 5px;
-    background-color: var(--retro-light-green); /* Replace with dynamically set color */
-    transition: transform 0.2s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+#register-score-button:hover {
+    cursor: url('img/mousehover.png'), pointer;
 }
-
-.color-tile:hover {
-    transform: scale(1.1);
+#close-leaderboard:hover {
     cursor: url('img/mousehover.png'), pointer;
 }
 
-#presented-color-tile {
-    width: 100px;
-    height: 100px;
-    margin: 20px auto; /* 제시된 색상 타일도 가운데 정렬 */
-    background-color: transparent;
-    border: 2px solid var(--retro-black);
-    border-radius: 10px;
-}
-
-#vhs-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('img/vhs.gif'); /* vhs.gif 위치에 맞게 경로 설정 */
-    background-size: cover;
-    opacity: 0.2; /* 투명도 조절 */
-    pointer-events: none; /* 클릭 등 이벤트 차단 */
-    z-index: 9999; /* 다른 요소 위에 표시 */
-}
-
-#crt-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('img/crt.gif'); /* vhs.gif 위치에 맞게 경로 설정 */
-    background-size: cover;
-    opacity: 0.1; /* 투명도 조절 */
-    pointer-events: none; /* 클릭 등 이벤트 차단 */
-    z-index: 9999; /* 다른 요소 위에 표시 */
-}
-
-/* 디졸브 효과를 위한 페이드 아웃 애니메이션 */
-.fade-out {
-    animation: fadeOut 1s forwards;
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
